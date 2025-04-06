@@ -2,7 +2,7 @@
 # 🎯 お題：リストから偶数だけを取り出す関数を作れ！
 
 nums = [1,2,3,4,5,6]
-def extarct_evens(nums):
+def extract_evens(nums):
     evens = []
     for num in nums:
         if num % 2 == 0:
@@ -10,4 +10,9 @@ def extarct_evens(nums):
 
     return evens
          
-print( extarct_evens(nums) )
+print( extract_evens(nums) )
+
+def extract_evens_list_comprehension(nums):
+    return [ num for num in nums if num % 2 == 0 ]
+
+print( extract_evens_list_comprehension(nums) )
