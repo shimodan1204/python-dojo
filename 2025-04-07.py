@@ -26,14 +26,14 @@ def extract_aiueo (base_string):
 
     return array
 
-print( extract_aiueo( arg ) )
+print(extract_aiueo(arg))
+
+def extract_aiueo(base_string):
+    return [t for t in base_string if t in "aiueo"]
+
+print(extract_aiueo(arg))
 
 def extract_aiueo (base_string):
-    return [ t for t in base_string if t in "aiueo" ]
+    return [(i, t) for (i, t) in enumerate(base_string) if t in "aiueo"]
 
-print( extract_aiueo( arg ) )
-
-def extract_aiueo (base_string):
-    return [ (i, t) for (i, t) in enumerate(base_string) if t in "aiueo" ]
-
-print( extract_aiueo( arg ) )
+print(extract_aiueo(arg))
