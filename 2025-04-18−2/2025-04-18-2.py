@@ -14,7 +14,6 @@
 # - パスは `os.path.dirname(__file__)` を使って構築すること
 
 import os, csv
-
 base_dir = os.path.dirname(__file__)
 
 # 読み込み
