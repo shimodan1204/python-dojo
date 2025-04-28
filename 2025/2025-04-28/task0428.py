@@ -25,7 +25,7 @@ merge_rows = []
 for path in ("file1.csv","file2.csv"):
     with open(os.path.join(base_dir, path), "r", encoding="utf-8") as f:
         merge_rows.extend(csv.reader(f))
-        
+
 # 抽出
 filtered_rows = [row for row in merge_rows if "python" in row[1].lower()]
 
