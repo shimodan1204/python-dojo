@@ -185,10 +185,13 @@ GitHub を使った add / commit / push の習慣化も目的としています�
 <details>
 <summary>📁 2025年5月の修行</summary>
 
+<details>
+
 - `2025/0501/task0501.py`：
   - file1.csv / file2.csv を結合し、2列目が 'Python' の行のみを抽出
   - 完全一致の重複行を除去（先に出た1件を残す）
   - set + list で順序を保持した重複除去を実装
+</details>
 </details>
 
 ---
