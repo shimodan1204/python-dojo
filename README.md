@@ -202,7 +202,9 @@ GitHub を使った add / commit / push の習慣化も目的としています�
 
 - `2025/0503/task0503-2.py`：
   - ヘッダー付きCSVを `csv.DictReader()` で読み込み、辞書形式で表示する処理を実装
-  - 読み込み時にも `newline=''` を指定する方が安全であることを再確認
+  - 読み込み時にも `newline=''` を指定する方が安全であることを再確認- `2025/0504/task0504.py`：
+  - `csv.DictReader` を使い、列名 (`row['language']`) を指定して条件フィルタリングを実行
+  - `.lower()` を用いて大文字小文字を区別しない判定を実装
 </details>
 
 ---
@@ -210,16 +212,18 @@ GitHub を使った add / commit / push の習慣化も目的としています�
 ## 🧗 現在の修行レベル
 
 - **開始日**：2025年4月6日
-- **現在の難易度**：★★★★☆（CSV DictReader導入）
+- **現在の難易度**：★★★★☆（CSV DictReader 活用フェーズ）
   - ファイル結合＋抽出＋並び替え＋出力の一連フロー習得
   - 複合キーソート、sort()とsorted()の違い、lambda式に習熟
   - 📁 ファイル操作（`with open`, `os.path`, `encoding`, `newline=''`)
-  - 📊 CSV操作（`csv.reader`, `csv.writer`, `csv.DictReader` ←🆕✨）
+  - 📊 CSV操作（`csv.reader`, `csv.writer`, `csv.DictReader` での読み取り・列名アクセス・フィルタリング ←🆕✨）
   - 🧠 内部処理への理解（イテレータ、スコープ、コピー種類）も深化
 
 - **次回の目標**：
-  - `csv.DictReader()` を使った列名での条件抽出・データ加工
+  - `csv.DictReader` を使った複数条件での抽出・データ加工
   - 辞書形式データの書き出し（`csv.DictWriter`）
+  - CSVデータからの統計値算出（例：特定の列の平均値など）
+
 ---
 
 引き続き精進！
