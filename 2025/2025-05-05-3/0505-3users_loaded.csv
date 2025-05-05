@@ -1,0 +1,5 @@
+name,email,level,is_expert
+Alice,alice@ex.com,Expert,yes
+Bob,bob@ex.com,Intermediate,no
+Charlie,charlie@ex.com,Expert,yes
+David,dave@ex.com,Beginner,no

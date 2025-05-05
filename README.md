@@ -212,6 +212,13 @@ GitHub を使った add / commit / push の習慣化も目的としています�
   - `csv.DictWriter` を導入し、辞書データから特定の列 (`name`, `email`) だけを選んで新しいCSVファイル (`experts.csv`) に書き出し
   - `fieldnames` の指定、`writeheader()`、`writerow()` の正しい使い方を習得・修正
   - 要件定義（ファイル名、列名指定）を正確に満たすことの重要性を再確認
+
+- `2025/0505-3/0505-3task.py`：
+  - `users.csv` を読み込み、「Expert」かどうかで `is_expert` カラムを付加
+  - `DictReader` で辞書形式に読み込み、各行に `row["is_expert"] = "yes" or "no"` を追加
+  - 加工後の辞書リストを `DictWriter` で `"users_loaded.csv"` に書き出し
+  - ヘッダー行を手動指定し、`writeheader()` を使って整ったCSV構造に
+
 </details>
 
 ---
@@ -219,19 +226,10 @@ GitHub を使った add / commit / push の習慣化も目的としています�
 ## 🧗 現在の修行レベル
 
 - **開始日**：2025年4月6日
-- **現在の難易度**：★★★★☆（CSV Dict応用・読み書き）
-  - 複数ファイル処理、条件抽出、複合キーソート等に習熟
-  - 📁 ファイル操作（`with open`, `os.path`, `encoding`, `newline=''`)
-  - 📊 **CSV操作（辞書形式）**
-    - `csv.DictReader`：列名でのアクセス・フィルタリング
-    - `csv.DictWriter`：特定の列を選択して書き出し、`fieldnames`, `writeheader()` ←🆕✨
-  - 🧠 例外処理、スコープ、イテレータ、命名規則への理解も深化
-
-- **次回の目標**：
-  - `DictReader` / `DictWriter` を使ったデータ変換・加工
-  - 複数ファイルからのデータマージ（辞書形式）
-  - JSONファイルの読み書き入門
-
+- **現在の難易度**：★★★★（DictWriter応用＋値の加工フェーズ）
+  - 読み込んだCSVデータの加工（列追加）処理を習得
+  - `DictReader` → 条件判定 → 加工 → `DictWriter` の一連の流れが自然に書ける
+  - フィールド名の明示と整った出力形式を意識できるように
 ---
 
 引き続き精進！
