@@ -223,6 +223,16 @@ GitHub を使った add / commit / push の習慣化も目的としています�
   - `name`を大文字化 (`.upper()`)、`email`にドメイン付与 (`+ "@company.com"`) するデータ加工を実施
   - 加工後のデータを`DictWriter`で新しいヘッダー(`NAME`, `full_email`)と共に別CSV (`processed_experts.csv`) へ書き出し
   - ファイル名のtypo修正も完了
+- `2025/0507/task0507.py`：
+  - `users.csv` を読み込み、"level" が "Intermediate" のユーザーだけを抽出
+  - 抽出した行の "name" と "email" だけを新しいファイル `intermediate_users.csv` に書き出し
+  - `DictReader` で条件判定、`Dict
+- `2025/0508/task2025-05-08.py`：
+  - `users.csv` を読み込み、各 `level` ごとにユーザー数を集計
+  - `collections.Counter` で出現回数をカウント
+  - 辞書形式に変換し、`level_summary.csv` に出力
+  - CSV書き出しには `DictWriter` を使用して整ったヘッダ行付きの形式で保存
+
 </details>
 
 ---
@@ -230,19 +240,12 @@ GitHub を使った add / commit / push の習慣化も目的としています�
 ## 🧗 現在の修行レベル
 
 - **開始日**：2025年4月6日
-- **現在の難易度**：★★★★☆（CSV Dict応用・データ加工）
-  - 複数ファイル処理、条件抽出、複合キーソート等に習熟
-  - 📁 ファイル操作（`with open`, `os.path`, `encoding`, `newline=''`)
-  - 📊 **CSV操作（辞書形式）**
-    - `csv.DictReader`：列名でのアクセス・フィルタリング
-    - `csv.DictWriter`：特定列の書き出し、`fieldnames`, `writeheader()`
-    - **データ加工・変換**（`.upper()`, 文字列結合/f-string）を伴う書き出し処理 ←🆕✨
-  - 🧠 例外処理、スコープ、イテレータ、命名規則への理解も深化
+- **現在の難易度**：★★★★（DictReader & 集約処理編）
+  - 複数行の集計処理を行い、CSV出力まで一貫した流れで処理
+  - `Counter` の活用で効率的な集計
+  - 読み込み→集計→書き出しまでの最適なデータフローを習得
 
-- **次回の目標**：
-  - より複雑なデータ変換（型変換、条件による値変更）
-  - 複数CSVファイルからのデータ結合（マージ）
-  - JSONファイルの読み書き入門
+---
 
 引き続き精進！
 ※この履歴はGPT兄さんが作成しています
