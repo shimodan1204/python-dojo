@@ -43,7 +43,7 @@ with open(data_path, "r", newline="", encoding="utf-8") as f:
                         continue
 
             except ValueError as e:
-                print(f"TransactionID : {row["TransactionID"]} is Price ValueError Price : {row["Price"]}")
+                print(f"TransactionID : {row["TransactionID"]} is ValueError Price : {row["Price"]}")
                 continue
 
 print(Quantity_total)
