@@ -250,6 +250,41 @@ GitHub を使った add / commit / push の習慣化も目的としています�
   - 抽出結果を `common_users.csv` として出力
   - 二重ループを排除し、計算量を O(n) に最適化
 
+- `2025/0511/task0511.py`:
+  - `sales_data.csv` を `csv.DictReader` で読み込み
+  - フィルタ条件:
+    - 'Quantity' が 3 より大きい (数値変換が必要)
+    - 'Region' が 'East'
+  - 抽出対象の列: 'Product', 'Quantity'
+  - 出力形式: 上記のキーを持つ辞書のリスト
+
+- `2025/0512/task0512-2.py`:
+  - `sales_data.csv` を `csv.DictReader` で読み込み
+  - フィルタ条件:
+    - ('Category' が 'Fruit' または 'Category' が 'Dairy') かつ ('Price' が 100 より大きい)
+    - 'Quantity' と 'Price' は `int()` で数値変換が必要
+    - 'Price' の数値変換エラーは `try-except` で無視
+  - 出力: 条件に合う取引の 'Quantity' の合計を表示
+- `2025/0512/task0512.py`:
+  - `sales_data.csv` を `csv.DictReader` で読み込み
+  - フィルタ条件:
+    - ('Category' が 'Fruit' または 'Category' が 'Dairy') かつ ('Price' が 100 より大きい)
+    - 'Quantity' と 'Price' は `int()` で数値変換が必要
+    - 'Price' の数値変換エラーは `try-except` で無視
+  - 出力: 条件に合う取引の 'Quantity' の合計を表示
+- `2025/0512/task0512-2.py`:
+  - `sales_data.csv` を `csv.DictReader` で読み込み
+  - フィルタ条件:
+    - 'Date' が '2023-04-01' 以降 (文字列比較またはdatetimeオブジェクトで比較)
+    - 'Price' は `int()` で数値変換が必要
+    - 'Price' の数値変換エラーは `try-except` で無視
+  - 出力: 条件に合う取引の 'Price' の合計を表示
+- `2025/0513/task0513.py`:
+  - `sales_data.csv` を `csv.DictReader` で読み込み
+  - フィルタ条件:
+    - 'Category' が 'Fruit'
+    - 'Quantity' が 5 以上 (`int()` で数値変換が必要、変換エラーは `try-except` で無視)
+  - 出力: 条件に合う取引の数をカウントして表示
 </details>
 
 ---

@@ -1,4 +1,4 @@
-# 🥋【2025-05-14（水）｜Python道場・第五十四問（DictReader 応用・フィルタリングとカウント集約）】
+# 🥋【2025-05-13（火）｜Python道場・第五十四問（DictReader 応用・フィルタリングとカウント集約）】
 # 🎯 お題：sales_data.csv を DictReader で読み込みます。
 # 'Category' が 'Fruit' であり、かつ 'Quantity' が 5 以上の全ての取引について、
 # その数をカウントして表示してください。

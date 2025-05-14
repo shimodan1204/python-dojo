@@ -1,4 +1,4 @@
-# 🥋【2025-05-15（木）｜Python道場・第五十五問（DictReader 応用・フィルタ＆データ加工）】
+# 🥋【2025-05-14（水）｜Python道場・第五十五問（DictReader 応用・フィルタ＆データ加工）】
 # 🎯 お題：sales_data.csv を DictReader で読み込みます。
 # 'Region' が 'North' または 'South' である取引を抽出し、
 # 抽出した各取引について、Product 名をすべて大文字に変換し、
