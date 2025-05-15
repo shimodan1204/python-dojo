@@ -285,6 +285,20 @@ GitHub を使った add / commit / push の習慣化も目的としています�
     - 'Category' が 'Fruit'
     - 'Quantity' が 5 以上 (`int()` で数値変換が必要、変換エラーは `try-except` で無視)
   - 出力: 条件に合う取引の数をカウントして表示
+
+- `2025/0514/task0514.py`:
+  - `sales_data.csv` を `csv.DictReader` で読み込み
+  - フィルタ条件: 'Region' が 'North' または 'South'
+  - データ加工: 抽出した取引の 'Product' 名をすべて大文字に変換 (`.upper()`)
+  - 出力形式: 変換後の 'Product' のみを含む新しい辞書のリスト (例: `[{'Product': 'APPLE'}, ...]`)
+
+- `2025/0515/task0515.py`:
+  - `sales_data.csv` を `csv.DictReader` で読み込み
+  - フィルタ条件:
+    - 'Date' が '2023-03-01' から '2023-04-30' の期間内
+    - 'Price' は `int()` で数値変換が必要（変換エラーは `try-except` で無視）
+  - 日付比較: 文字列比較または `datetime` オブジェクトで比較
+  - 出力: 条件に合う取引の 'Price' の合計を表示
 </details>
 
 ---
