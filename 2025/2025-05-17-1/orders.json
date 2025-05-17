@@ -1,0 +1,36 @@
+[
+    {
+      "order_id": "ORD001",
+      "customer_id": "CUST100",
+      "order_date": "2025-05-15",
+      "items": [
+        {"product_name": "スマートウォッチ", "price": 15000, "quantity": 1},
+        {"product_name": "交換用バンド", "price": 2000, "quantity": 2}
+      ]
+    },
+    {
+      "order_id": "ORD002",
+      "customer_id": "CUST200",
+      "order_date": "2025-05-16",
+      "items": [
+        {"product_name": "ワイヤレスイヤホン", "price": 8000, "quantity": 1}
+      ]
+    },
+    {
+      "order_id": "ORD003",
+      "customer_id": "CUST100",
+      "order_date": "2025-05-16",
+      "items": [
+        {"product_name": "キーボード", "price": 7000, "quantity": 1},
+        {"product_name": "マウス", "price": 3000, "quantity": 1}
+      ]
+    },
+    {
+      "order_id": "ORD004",
+      "customer_id": "CUST300",
+      "order_date": "2025-05-17",
+      "items": [
+        {"product_name": "タブレット", "price": "不明", "quantity": 1}
+      ]
+    }
+  ]

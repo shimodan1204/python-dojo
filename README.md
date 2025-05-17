@@ -304,6 +304,18 @@ GitHub を使った add / commit / push の習慣化も目的としています�
   - `'Category'` ごとに `'Quantity'` の合計を計算
   - `'Quantity'` は `int()` で数値変換が必要（変換エラーは `try-except` で無視）
   - 出力: カテゴリごとの `'Quantity'` の合計を辞書形式で表示
+
+- `2025/2025-05-17-1/task.py`:
+  - `orders.json` を `json` モジュールで読み込み
+  - 顧客ごとの合計注文金額を計算:
+    - 各注文の `items` 内の `price` と `quantity` から小計を算出し、注文全体の合計金額を計算
+    - `customer_id` ごとに全注文の合計金額を集計
+  - 不正データの処理:
+    - `price` や `quantity` が数値に変換できない場合、エラー情報を `error_log.txt` に記録
+    - 該当アイテムの計算は `try-except` を使ってスキップ
+  - 出力ファイル:
+    - `customer_revenue.csv`: 顧客IDごとの合計金額 (ヘッダー: `customer_id,total_revenue`)
+    - `error_log.txt`: 不正データに関するエラー情報
 </details>
 
 ---
