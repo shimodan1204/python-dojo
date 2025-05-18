@@ -130,7 +130,7 @@ books_master = create_books_master(books_csv_path)
 # sales.csvをマスターデータに変換する
 sales_data = create_sales_data(sales_csv_path)
 
-sales.csvのquantity_soldをチェックする
+# sales.csvのquantity_soldをチェックする
 invalid_sales_quantity_sold = check_sales_quantity_sold(sales_data)
 
 # sales.csvのquantity_soldnにエラーがあればログファイルに書き出す
