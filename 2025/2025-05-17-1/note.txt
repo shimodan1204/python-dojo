@@ -1,0 +1,285 @@
+## 【Pythonで挑戦】JSONとCSVで顧客データを集計してみました
+
+### はじめに
+
+こんにちは。Pythonのスキルアップを目指して、日々練習問題に取り組んでいます。
+今回は、ECサイトの注文履歴（JSON形式）から顧客ごとの合計売上を計算し、CSVファイルに出力するという課題に挑戦してみました。
+
+ネストしたデータの扱いやエラー処理など、実践的な内容が多く、とても勉強になったと感じています。
+この記事では、その過程で学んだことや、少しつまずいた点、そしてそれをどのように解決したかをまとめてみました。
+（Geminiのアドバイスも、今回とても参考になりました！）
+
+### 今回挑戦した問題
+
+私が取り組んだ問題の概要は、以下の通りです。
+（こちらをご覧いただくと、どのような課題だったかご理解いただきやすいかと思います。）
+
+```
+# 🎯 お題：
+# ECサイトの注文履歴がJSONファイル（orders.json）に保存されています。
+# このファイルから顧客ごとの合計注文金額を計算し、結果を新しいCSVファイル（customer_revenue.csv）に出力してください。
+
+# 【orders.json のサンプルデータ形式】
+# (この内容で orders.json ファイルを作成して使ってください)
+[
+    {
+      "order_id": "ORD001",
+      "customer_id": "CUST100",
+      "order_date": "2025-05-15",
+      "items": [
+        {"product_name": "スマートウォッチ", "price": 15000, "quantity": 1},
+        {"product_name": "交換用バンド", "price": 2000, "quantity": 2}
+      ]
+    },
+    {
+      "order_id": "ORD002",
+      "customer_id": "CUST200",
+      "order_date": "2025-05-16",
+      "items": [
+        {"product_name": "ワイヤレスイヤホン", "price": 8000, "quantity": 1}
+      ]
+    },
+    {
+      "order_id": "ORD003",
+      "customer_id": "CUST100",
+      "order_date": "2025-05-16",
+      "items": [
+        {"product_name": "キーボード", "price": 7000, "quantity": 1},
+        {"product_name": "マウス", "price": 3000, "quantity": 1}
+      ]
+    },
+    {
+      "order_id": "ORD004",
+      "customer_id": "CUST300",
+      "order_date": "2025-05-17",
+      "items": [
+        {"product_name": "タブレット", "price": "不明", "quantity": 1}
+      ]
+    }
+  ]
+
+# 【条件】
+# 1.  `json` モジュールを使って `orders.json` を読み込みます。
+# 2.  各注文について、`items` リスト内の各商品の `price` と `quantity` を掛け合わせて小計を出し、注文全体の合計金額を計算します。
+# 3.  顧客ID (`customer_id`) ごとに、その顧客の全注文の合計金額を集計します。
+# 4.  集計結果を `customer_revenue.csv` に書き出します。CSVのヘッダーは `customer_id,total_revenue` としてください。
+# 5.  もし `price` や `quantity` が数値に変換できないような不正なデータがあった場合は、エラーログ（例えば `error_log.txt`）に注文IDとその理由を記録し、そのアイテムの計算はスキップしてください（`try-except`を活用しましょう）。
+
+# 【出力 `customer_revenue.csv` の例】
+# customer_id,total_revenue
+# CUST100,131000
+# CUST200,8000
+
+# 【出力 `error_log.txt` の例】
+# エラー: 項目「price」の値「不明」は無効です。(注文ID: ORD004, 商品: Tablet)
+
+# 【ヒント】
+# * ネストしたデータ構造の扱いに注意してください。
+# * 顧客ごとの合計金額を保持するために、辞書を使うと便利かもしれません。
+# * `json.load()` または `json.loads()` でJSONデータをPythonの辞書やリストに変換できます。
+```
+
+### 私の回答と、そこに至るまでの道のり
+
+#### 1. まずはJSONファイルを読み込みます
+
+PythonでJSONファイルを扱う際には、`json`モジュールがとても便利です。ファイルを開いて `json.load()` を使うことで、Pythonの辞書やリストとしてスムーズに扱えるようになりますね。
+
+ここで少し補足ですが、`json.load()` はファイルオブジェクトから、`json.loads()` は文字列からデータを読み込む、という違いがあります。以前、Geminiに「`loads` の `s` はstringの `s` なんですよ」と教えていただき、とてもすっきりしました。
+
+実際のコード（ファイルを開いて `json.load()` を行う部分）はこちらです。
+```python
+import json
+import os
+
+dirname = os.path.dirname(__file__)
+orders_path = os.path.join(dirname, "orders.json") # ファイルパスは変数にしておくと管理しやすいですね
+
+with open(orders_path, "r", encoding="utf-8") as file:
+    orders = json.load(file)
+```
+
+#### 2. 注文ごとの金額、そして顧客ごとの合計金額へ
+
+読み込んだデータは、注文のリストの中に商品アイテムのリストが含まれるという、入れ子（ネスト）構造になっていました。これを一つひとつ丁寧に取り出して計算していくことが、今回のポイントの一つでした。
+
+**つまずいた点①：顧客ごとの売上合計が上書きされてしまう…！**
+
+最初のうちは、同じお客様が複数の注文をされている場合に、最後の注文の金額しか記録されず、「あれ？」と少し戸惑いました。
+その際、Geminiから辞書の `get()` メソッドを使う方法を教えていただきました。`customer_revenue.get(customer_id, 0)` のように記述することで、もしキーがまだ辞書に存在しなければ `0` を初期値として使えるため、うまく売上を累積して計算できるようになりました。
+
+修正前と修正後のロジックの一部を比較すると、変化が分かりやすいかもしれません。
+```python
+# 修正前 (イメージです)
+# customer_revenue[customer_id] = order_total # これだと新しい注文で上書きされてしまいます
+
+# 修正後 (実際のコードより抜粋)
+customer_id = order.get('customer_id', 'N/A')
+# product_revenue_total は、その注文で計算された合計金額です
+customer_revenue[customer_id] = customer_revenue.get(customer_id, 0) + product_revenue_total
+```
+この修正で、例えばCUST100さんの売上が正しく `131000` と集計されるようになりました。
+
+#### 3. データはいつも綺麗とは限らない…エラー処理も大切です
+
+注文データの中には、価格が数値ではないもの（例：「不明」）が含まれている可能性も考慮する必要がありました。こういった予期せぬデータを適切に処理しないと、プログラムが途中で止まってしまうことがあります。
+
+そこで、まず数値を安全に検証するための関数 `is_valid_number` を用意しました。`try-except ValueError` を使って、数値に変換できない場合は `None` を返すようにしています。
+```python
+def is_valid_number(value):
+    # 値を整数に変換しようと試み、成功すればその整数を、失敗すればNoneを返します。
+    try:
+        return int(value)
+    except ValueError:
+        return None
+```
+
+**エラーログをファイルに残す工夫**
+
+当初はエラーが発生した際にコンソールに出力していましたが、課題の条件に合わせて、エラー情報を `error_log.txt` に書き出すように変更しました。エラーが発生した場合にのみファイルが作成されるように、エラーメッセージを一旦リストに集め、最後にまとめて書き出すという方法を取りました。
+また、エラーメッセージがより分かりやすくなるように、`create_error_message` という関数も用意しました。
+
+#### 4. 最後に結果をCSVファイルへ
+
+集計が完了した顧客ごとの合計金額は、`csv.DictWriter` を使ってCSVファイルに出力しました。この際、ヘッダー行も忘れずに書き込むようにしています。
+
+### 完成したPythonコード
+
+最終的に完成した `task.py` の全コードは、以下の通りです。
+（コメントも少し加えてみましたので、全体の流れを掴んだり、もしよろしければ試していただいたりする際のご参考になれば幸いです。）
+```python
+import os
+import csv
+import json
+
+# エラーメッセージを生成する関数
+def create_error_message(order_id, product_name, field_name, value):
+    return f"エラー: 項目「{field_name}」の値「{value}」は無効です。(注文ID: {order_id}, 商品: {product_name})"
+
+# 値が有効な数値かどうかを判定する関数
+def is_valid_number(value):
+    # 整数に変換できればその値を、できなければNoneを返します
+    try:
+        value_int = int(value)
+        return value_int
+    except ValueError:
+        return None
+
+# ファイルパスを変数として定義（定数として大文字で表現することも良い習慣です）
+dirname = os.path.dirname(__file__)
+ORDERS_JSON_PATH = os.path.join(dirname, "orders.json")
+CUSTOMER_REVENUE_CSV_PATH = os.path.join(dirname, "customer_revenue.csv")
+ERROR_LOG_TXT_PATH = os.path.join(dirname, "error_log.txt")
+
+# orders.json の読み込み（ファイル存在チェックとJSON形式チェックも追加）
+try:
+    with open(ORDERS_JSON_PATH, "r", encoding="utf-8") as file:
+        orders_data = json.load(file)
+except FileNotFoundError:
+    print(f"エラー: {ORDERS_JSON_PATH} が見つかりません。処理を終了します。")
+    exit() # プログラムを終了
+except json.JSONDecodeError:
+    print(f"エラー: {ORDERS_JSON_PATH} のJSON形式が正しくありません。処理を終了します。")
+    exit() # プログラムを終了
+
+# 顧客ごとの合計金額とエラーログを格納する辞書とリストを初期化
+customer_revenue = {}
+error_messages_log = []
+
+# JSONデータ（注文リスト）を反復処理して集計
+for order in orders_data:
+    order_id_str = order.get('order_id', 'N/A') # エラーメッセージ用に注文IDを取得
+    current_order_total = 0 # この注文の合計金額
+    order_has_error = False # この注文内でエラーが発生したかどうかのフラグ
+
+    # 各注文内の商品アイテムリストを処理
+    for item in order.get("items", []): # itemsキーが存在しない場合に備え、デフォルト値を空リストに
+        product_name_str = item.get('product_name', 'N/A') # エラーメッセージ用に商品名を取得
+
+        price_val = item.get("price")
+        quantity_val = item.get("quantity")
+
+        price_int = is_valid_number(price_val)
+        quantity_int = is_valid_number(quantity_val)
+
+        # price または quantity が無効な場合、エラーログに追加
+        if price_int is None:
+            error_messages_log.append(
+                create_error_message(order_id_str, product_name_str, 'price', price_val)
+            )
+            order_has_error = True
+        if quantity_int is None:
+            error_messages_log.append(
+                create_error_message(order_id_str, product_name_str, 'quantity', quantity_val)
+            )
+            order_has_error = True
+
+        # いずれかの値が無効だった場合、このアイテムの計算はスキップ
+        if price_int is None or quantity_int is None:
+            continue
+
+        # 有効な場合は小計を計算し、注文合計に加算
+        current_order_total += price_int * quantity_int
+
+    # 注文内にエラーがなく、かつ注文合計が0より大きい場合のみ顧客の総売上に加算
+    if not order_has_error and current_order_total > 0:
+        customer_id_str = order.get('customer_id', 'N/A')
+        customer_revenue[customer_id_str] = customer_revenue.get(customer_id_str, 0) + current_order_total
+
+# --- 集計処理終了 ---
+
+# customer_revenue.csv に結果を書き出し
+with open(CUSTOMER_REVENUE_CSV_PATH, "w", newline="", encoding="utf-8") as file:
+    writer = csv.DictWriter(file, fieldnames=["customer_id", "total_revenue"])
+    writer.writeheader()
+    for customer_id, total_revenue_val in customer_revenue.items():
+        writer.writerow({"customer_id": customer_id, "total_revenue": total_revenue_val})
+
+print(f"集計結果を {CUSTOMER_REVENUE_CSV_PATH} に出力しました。")
+
+# error_log.txt にエラーメッセージを書き出し（エラーがある場合のみ）
+if error_messages_log: # error_messages_log リストに内容がある場合
+    with open(ERROR_LOG_TXT_PATH, "w", encoding="utf-8") as file:
+        for error_msg in error_messages_log:
+            file.write(error_msg + "\n") # 各エラーメッセージを改行して書き込み
+    print(f"エラーログを {ERROR_LOG_TXT_PATH} に出力しました。")
+else:
+    print("エラーは発生しませんでした。")
+```
+
+### 実行結果
+
+生成されたファイルの内容は、以下のようになりました。
+
+**`customer_revenue.csv` の内容**
+```csv
+customer_id,total_revenue
+CUST100,131000
+CUST200,8000
+```
+
+**`error_log.txt` の内容** (ORD004の`price`が"不明"だった注文に対応)
+```
+エラー: 項目「price」の値「不明」は無効です。(注文ID: ORD004, 商品: Tablet)
+```
+期待通り、CUST100さんの売上が `131000` となり、エラーログも正しく出力されていることが確認できました。
+
+### 今回の挑戦で学んだこと・気づいたこと
+
+今回の課題を通じて、特に以下の点について学びや気づきがありました。
+*   `json.load()` と `json.loads()` の適切な使い分け。
+*   ネストしたデータ構造（辞書の中のリストなど）に対するループ処理の方法。
+*   辞書の `.get(key, defaultValue)` を使った、安全な値の取得と数値の累積計算テクニック。
+*   `try-except` を用いた、より堅牢なエラーハンドリングの重要性。
+*   処理中に発生したエラー情報を、ログファイルとして記録する方法。
+*   `csv.DictWriter` を利用したCSVファイルへの書き出し方法。
+
+また、Geminiとお話しする中で、コードの可読性についても改めて考える良い機会になりました。例えば、変更されない値（ファイルパスなど）は定数として大文字で記述したり（例：`ORDERS_JSON_PATH`）、変数名はその意味が第三者にも伝わりやすいように工夫したりすることは、後からコードを見返す自分自身のためにも、とても大切だと感じました。
+
+最初はうまくいかない部分もありましたが、一つひとつ問題点を整理し、解決していく過程はとても楽しく、達成感がありました。
+
+### おわりに
+
+今回は、JSONデータの扱いやエラー処理など、多くの実践的な学びを得ることができました。まだまだ勉強中の身ではありますが、こうして学んだことを記録として残すことで、自身の成長にも繋がるように感じています。次にどのような課題に挑戦できるか、今から楽しみです。
+
+最後までお読みいただき、ありがとうございました。
