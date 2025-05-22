@@ -1,0 +1,16 @@
+enrollment_id,user_id,course_id,enrollment_date,completion_status,grade
+E001,U100,C01,2024-01-15,completed,85
+E002,U101,C02,2024-01-20,in_progress,
+E003,U100,C03,2024-02-01,completed,92
+E004,U102,C01,2024-02-05,completed,78
+E005,U103,C04,2024-02-10,not_started,
+E006,U101,C01,2024-03-01,completed,90
+E007,U104,C02,2024-03-05,completed,
+E008,U100,C02,2024-03-10,in_progress,
+E009,U105,C03,2024-03-15,completed,88
+E010,U102,C04,2024-04-01,completed,95
+E011,U106,C01,2024-04-05,failed,45
+E012,U107,C05,2024-04-10,completed,80
+E013,U108,C01,2024-01-18,completed,A+
+E014,U109,C02,2024-02-20,completed,
+E015,U110,C03,2024-03-01,in_progress,B

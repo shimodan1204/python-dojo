@@ -1,0 +1,52 @@
+Python練習問題59問目：複数CSVファイルの関連付けと分析②
+
+前回{ここに①のリンク貼りたい}から引き続き練習問題に取り組み中でしたが
+取り組みはじめてから3日目、ようやく終わった！
+
+Gemniさんからも無事完了のお墨付きもらえました、やったー
+
+前回から追加したのはエラー判定部分
+sales.csvのレコードで、quantity_soldの値が不正な場合はエラーログに書き出す処理を追加しました
+
+戻り値を正常なレコードと不正なレコードにするか、
+正常なレコードとエラーメッセージにするかで悩んだのですが、
+関数名も”check”にしたし、dicとテキストlistの型違いコンビでもよかろうと後者を選択
+
+```
+def check_and_separate_sales_data(sales_data):
+    valid_sales_records = []
+    error_messages = []
+    for sale in sales_data:
+        quantity_int_or_none = check_quantity_sold(sale.get("quantity_sold"))
+        if quantity_int_or_none is None:
+            error_message = create_error_message(sale.get("sale_id", "N/A"), "quantity_sold", sale.get("quantity_sold"))
+            error_messages.append(error_message)
+        else:
+            valid_sales_records.append(sale)
+
+    return {
+        "valid_sales_records": valid_sales_records,
+        "error_messages": error_messages
+    }
+```
+
+CSV2つをリレーショナルデータベースっぽく結合して、
+エラーチェックして書き出して、
+正常系もカテゴリと要素で2段階で集計して、
+とかなり色々なことをやって、学びのある練習問題でした
+
+次の問題はどんなのになるのかな？
+また次もよろしくお願いしますよGeminiさん
+
+
+とそんなわけで、
+ここまで読んでいただいてありがとうございます。
+
+また次の問題で凹んだり喜んだりすると思いますので、
+あなたの楽しみの1つになれれば幸いです
+
+問題文と全貌はコチラです
+＜問題文を書く＞
+＜CSV1を書く＞
+＜CSV2を書く＞
+＜回答全文を書く＞

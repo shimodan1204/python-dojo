@@ -49,45 +49,53 @@ sales_error_log_path = os.path.join(dir_path, SALES_ERROR_LOG_FILE)
 books_error_log_path = os.path.join(dir_path, BOOKS_ERROR_LOG_FILE)
 category_summary_path = os.path.join(dir_path, CATEGORY_SUMMARY_FILE)
 
-def create_error_message(unique_id, field_key, field_value):
-    return f"{unique_id} の {field_key} が不正です: {field_value}"
-
-def check_sales_quantity_sold(sales_data):
-    invalid_data = []
-    for sale in sales_data:
-        if not sale.get("quantity_sold"):
-            invalid_data.append(create_error_message(sale["sale_id"], "quantity_sold", sale["quantity_sold"]))
-
-    return invalid_data
-
-def create_books_master(books_csv_path):
-    with open(books_csv_path, "r") as f:
-        reader = csv.DictReader(f)
-        books_data = list(reader)
-        books_master = {book["book_id"]:book for book in books_data if book.get("book_id")}
-    return books_master
-
-def create_sales_data(sales_csv_path):
-    with open(sales_csv_path, "r") as f:
-        reader = csv.DictReader(f)
-        sales_data = list(reader)
-    return sales_data
-
 def check_quantity_sold(quantity_sold):
     try:
         return int(quantity_sold)
     except ValueError:
         return None
 
-def sum_book_quentities_sold(sales_data):
+def create_error_message(unique_id, field_key, field_value):
+    return f"{unique_id} の {field_key} が不正です: {field_value}"
+
+def check_and_separate_sales_data(sales_data):
+    valid_sales_records = []
+    error_messages = []
+    for sale in sales_data:
+        quantity_int_or_none = check_quantity_sold(sale.get("quantity_sold"))
+        if quantity_int_or_none is None:
+            error_message = create_error_message(sale.get("sale_id", "N/A"), "quantity_sold", sale.get("quantity_sold"))
+            error_messages.append(error_message)
+        else:
+            valid_sales_records.append(sale)
+
+    return {
+        "valid_sales_records": valid_sales_records,
+        "error_messages": error_messages
+    }
+
+def create_books_master(books_csv_path):
+    with open(books_csv_path, "r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        books_data = list(reader)
+        books_master = {book["book_id"]:book for book in books_data if book.get("book_id")}
+    return books_master
+
+def create_sales_data(sales_csv_path):
+    with open(sales_csv_path, "r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        sales_data = list(reader)
+    return sales_data
+
+def sum_book_quantities_sold(sales_data):
     books_quantities_sold = defaultdict(int)
     for sale in sales_data:
         book_id = sale.get("book_id", "N/A")
-        quantity_sold = sale.get("quantity_sold", 0)
+        quantity_sold = sale.get("quantity_sold")
         quantity_sold_int = check_quantity_sold(quantity_sold)
-        if quantity_sold_int is None:
-            continue
-        books_quantities_sold[book_id] = books_quantities_sold.get(book_id, 0) + quantity_sold_int
+
+        # defaultdictでキーが無い場合自動的に0になるため、+=だけで処理できる
+        books_quantities_sold[book_id] += quantity_sold_int
     return books_quantities_sold
 
 def sum_category_quantities_sold(books_master, books_quantities_sold):
@@ -115,8 +123,8 @@ def create_category_summary(category_quantities_sold, category_top_selling_books
         category_summary.append({
             "category": category,
             "total_quantity_sold": int(category_quantities_sold[category]),
-            "top_selling_book_title": top_selling_book["top_selling_book_title"],
-            "top_book_quantity": top_selling_book["top_book_quantity"]
+            "top_selling_book_title": top_selling_book.get("top_selling_book_title"),
+            "top_book_quantity": top_selling_book.get("top_book_quantity", 0)
         })
     return category_summary
 
@@ -131,16 +139,20 @@ books_master = create_books_master(books_csv_path)
 sales_data = create_sales_data(sales_csv_path)
 
 # sales.csvのquantity_soldをチェックする
-invalid_sales_quantity_sold = check_sales_quantity_sold(sales_data)
+invalid_sales_quantity_sold = check_and_separate_sales_data(sales_data)
+
+# sales.csvから有効なデータと無効なデータを取り出す
+valid_sales_records = invalid_sales_quantity_sold.get("valid_sales_records", [])
+error_messages = invalid_sales_quantity_sold.get("error_messages", [])
 
 # sales.csvのquantity_soldnにエラーがあればログファイルに書き出す
-if invalid_sales_quantity_sold:
+if error_messages:
     with open(sales_error_log_path, "w") as f:
-        for error_message in invalid_sales_quantity_sold:
+        for error_message in error_messages:
             f.write(error_message + "\n")
 
 # 本の販売数を集計する
-books_quantities_sold = sum_book_quentities_sold(sales_data)
+books_quantities_sold = sum_book_quantities_sold(valid_sales_records)
 
 # カテゴリ単位で販売数を集計する
 category_quantities_sold = sum_category_quantities_sold(books_master, books_quantities_sold)

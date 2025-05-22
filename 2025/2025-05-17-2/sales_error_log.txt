@@ -1,0 +1,1 @@
+S009 の quantity_sold が不正です: ABC

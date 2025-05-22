@@ -1,0 +1,2543 @@
+==================================================
+File: 2025/2025-04/2024-04-10-3.py
+==================================================
+
+# 🥋【2025-04-10（木）｜Python道場・第九問】
+# 🎯 お題：テキストファイルから全行を読み取り、逆順にして別ファイルに書き出す関数を作れ！
+#
+# 【条件】
+# - 読み込むファイルは UTF-8 の通常テキストファイルとする
+# - 書き出しファイルは "output.txt" という名前でOK
+# - 空行もそのまま含めてOK
+# - 行末の改行は維持しても消してもOK（おまかせ！）
+#
+# 【例】
+# input.txt の中身：
+# A
+# B
+# C
+#
+# → 出力：output.txt の中身
+# C
+# B
+# A
+
+# inputs = []
+with open("input.txt", "r", encoding="utf-8") as f:
+    inputs = [line.strip() for line in f.readlines()]
+    inputs.reverse()
+
+with open("output.txt", "w", encoding="utf-8") as f:
+    f.write("\n".join(inputs))
+
+
+==================================================
+File: 2025/2025-04/2025-04-06.py
+==================================================
+
+# 🥋【2025-04-06（日）｜Python道場・第一問】
+# 🎯 お題：リストから偶数だけを取り出す関数を作れ！
+#
+# 【条件】
+# - 数字の入ったリストが与えられる
+# - 偶数だけを抽出して、新しいリストとして返す関数を作成すること
+#
+# 【入力例】
+# [1, 2, 3, 4, 5, 6]
+#
+# 【出力例】
+# [2, 4, 6]
+#
+# 【ヒント】
+# - if文で `num % 2 == 0` を使う
+# - list comprehension でも書ける
+
+
+nums = [1,2,3,4,5,6]
+def extract_evens(nums):
+    evens = []
+    for num in nums:
+        if num % 2 == 0:
+            evens.append( num )
+
+    return evens
+
+print( extract_evens(nums) )
+
+def extract_evens_list_comprehension(nums):
+    return [ num for num in nums if num % 2 == 0 ]
+
+print( extract_evens_list_comprehension(nums) )
+
+
+==================================================
+File: 2025/2025-04/2025-04-07.py
+==================================================
+
+# 🥋【2025-04-07（月）｜Python道場・第二問】
+# 🎯 お題：文字列から母音だけを取り出す関数を作れ！
+#
+# 【条件】
+# - 英単語などの文字列が与えられる
+# - 母音（a, i, u, e, o）の文字だけを取り出し、リストで返す関数を作成する
+#
+# 【入力例】
+# "chatgpt"
+#
+# 【出力例】
+# ['a']
+#
+# 【ヒント】
+# - 文字列は1文字ずつ for 文で取り出せる
+# - `if c in 'aiueo'` を使えば母音判定できる
+# - list comprehension（リスト内包表記）でも書ける
+
+arg = "hfdhharruuriewfweurreo"
+
+def extract_aiueo (base_string):
+    array = []
+    for t in base_string:
+        if t in "aiueo":
+            array.append(t)
+
+    return array
+
+print(extract_aiueo(arg))
+
+def extract_aiueo(base_string):
+    return [t for t in base_string if t in "aiueo"]
+
+print(extract_aiueo(arg))
+
+def extract_aiueo (base_string):
+    return [(i, t) for (i, t) in enumerate(base_string) if t in "aiueo"]
+
+print(extract_aiueo(arg))
+
+
+==================================================
+File: 2025/2025-04/2025-04-07-2.py
+==================================================
+
+# 🥋【2025-04-07（月）｜Python道場・第三問】
+# 🎯 お題：文字列の中で「母音が出てきた位置（index）」だけを抽出する関数を作れ！
+#
+# 【条件】
+# - 与えられた文字列の中から、母音（a, i, u, e, o）が登場する**インデックス番号のみ**を抽出し、リストで返す関数を作る
+#
+# 【入力例】
+# "hfdhharruuriewfweurreo"
+#
+# 【出力例】
+# [6, 7, 8, 9, 11, 14, 16, 17, 18, 20]
+#
+# 【ヒント】
+# - enumerate() を使って index と文字のペアで取り出せ！
+# - `if c in "aiueo"` で母音を判定！
+# - リスト内包表記でも書ける！
+
+arg = "hfdhharruuriewfweurreo"
+
+def extract_aiueo (base_string):
+    array = []
+    for (i, t) in enumerate(base_string):
+        if t in "aiueo":
+            array.append(i)
+
+    return array
+
+print(extract_aiueo(arg))
+
+def extract_aiueo (base_string):
+    return [i for (i, t) in enumerate(base_string) if t in "aiueo"]
+
+print(extract_aiueo(arg))
+
+==================================================
+File: 2025/2025-04/2025-04-08.py
+==================================================
+
+# 🥋【2025-04-08（火）｜Python道場・第四問】
+# 🎯 お題：整数のリストから、偶数だけを2倍にして返す関数を作れ！
+#
+# 【条件】
+# - 与えられた整数リストのうち、偶数は2倍、奇数は無視する
+# - 処理後の新しいリストを返す関数を定義すること
+#
+# 【入力例】
+# [1, 2, 3, 4, 5]
+#
+# 【出力例】
+# [4, 8]
+
+nums = [1, 2, 3, 4, 5]
+
+def extract_baipush (nums):
+    evens = []
+    for num in nums:
+        if num % 2 == 0:
+            evens.append(num * 2)
+
+    return evens
+
+print(extract_baipush(nums))
+
+
+def extract_baipush (nums):
+    return [num*2 for num in nums if num % 2 == 0]
+
+print(extract_baipush(nums))
+
+==================================================
+File: 2025/2025-04/2025-04-08-2.py
+==================================================
+
+# 🥋【2025-04-08（火）｜Python道場・第五問】
+# 🎯 お題：文字列の中から**小文字のアルファベットだけ**を取り出し、1つの文字列にして返す関数を作れ！
+#
+# 【条件】
+# - 与えられた文字列には、記号や数字、大文字なども混ざっている
+# - その中から **小文字の a〜z のみ** を抽出し、それらを1つの文字列として返す
+#
+# 【入力例】
+# "Hello, World! 123 python_3.9"
+#
+# 【出力例】
+# "elloorldpython"
+
+import re
+question = "Hello, World! 123 python_3.9"
+
+def extract_lowerWord (text):
+    pattern = r"[a-z]"
+    return "".join(re.findall(pattern, text))
+
+print(extract_lowerWord(question))
+
+==================================================
+File: 2025/2025-04/2025-04-09.py
+==================================================
+
+# 🥋【2025-04-09（水）｜Python道場・第六問】
+# 🎯 お題：文字列の中から「英数字だけ」を取り出して、ひとつの文字列として返す関数を作れ！
+#
+# 【条件】
+# - アルファベット（a〜z、A〜Z）と数字（0〜9）だけを対象とする
+# - 記号やスペースなどはすべて除外
+# - `is○○()` 系メソッドを使って実装すること！
+#
+# 【入力例】
+# "Hello, Python3.9! 2025年"
+#
+# 【出力例】
+# "HelloPython392025"
+
+base_string = "Hello, Python3.9! 2025年"
+
+def extract_alpha_and_num(text):
+    extract_text = ""
+    for t in text:
+        if t.isalnum() and t.isascii():
+            extract_text += t
+
+    return extract_text
+
+print(extract_alpha_and_num(base_string))
+
+def extract_alpha_and_num(text):
+    return "".join([t for t in text if t.isalnum() and t.isascii()])
+
+print(extract_alpha_and_num(base_string))
+
+==================================================
+File: 2025/2025-04/2025-04-10/2025-04-10.py
+==================================================
+
+# 🥋【2025-04-10（木）｜Python道場・第七問】
+# 🎯 お題：文字列の中から「数字だけ」を取り出して、新しい文字列として返す関数を作れ！
+#
+# 【条件】
+# - 0〜9の数字だけを対象とする
+# - 記号・スペース・英字・漢字などは除外
+# - `is○○()` 系メソッドを使って実装すること！
+#
+# 【入力例】
+# "TEL: 03-1234-5678 / 内線: 999"
+#
+# 【出力例】
+# "0312345678999"
+
+base_string = "TEL: 03-1234-5678 / 内線: 999 １２３４"
+
+# 半角のみ + 通常
+def extract_digit_hannum (string):
+    hankana = ""
+    for t in string:
+        if t.isdigit() and t.isascii():
+            hankana += t
+
+    return hankana
+
+# 半角のみ + 内包表記
+print(extract_digit_hannum(base_string))
+
+def extract_digit_hannum (string):
+    return "".join([t for t in string if t.isdigit() and t.isascii()])
+
+print(extract_digit_hannum(base_string))
+
+# 半角 + 全角 + 通常
+def extract_digit_hannum_zennum (string):
+    hankana_zenkana = ""
+    for t in string:
+        if t.isdigit():
+            hankana_zenkana += t
+
+    return hankana_zenkana
+
+print(extract_digit_hannum_zennum(base_string))
+
+# 半角 + 全角 + 内包表記
+def extract_digit_hannum_zennum (string):
+    return "".join([t for t in string if t.isdigit()])
+
+print(extract_digit_hannum_zennum(base_string))
+
+==================================================
+File: 2025/2025-04/2025-04-10-2.py
+==================================================
+
+# 🥋【2025-04-10（木）｜Python道場・第八問】
+# 🎯 お題：テキストファイルから行を読み取り、「数字だけの行」をリストにして返す関数を作れ！
+#
+# 【条件】
+# - ファイルは UTF-8 の通常テキストとする
+# - 数字だけの行（空白や文字が混ざらない）が対象
+# - `is○○()` 系メソッドが使いたければ使ってもOK（卒業済でも再利用可）
+# - 応用として `with open()` の書き方に慣れよう！
+#
+# 【例】
+# test.txt の中身：
+# 12345
+# abcde
+# 67890
+# 1a2b3
+#
+# → 出力：['12345', '67890']
+
+with open("test.txt", "r", encoding="utf-8") as f:
+    extract_digit = []
+    for line in f:
+        line_strip = line.strip()
+        if line_strip.isdigit():
+            extract_digit.append(line_strip)
+
+    print(extract_digit)
+
+with open("test.txt", "r", encoding="utf-8") as f:
+    print([line.strip() for line in f if line.strip().isdigit()])
+
+==================================================
+File: 2025/2025-04/2025-04-11/2025-04-11.py
+==================================================
+
+# 🥋【2025-04-11（金）｜Python道場・第十問】
+# 🎯 お題：テキストファイルに「日付付きのメッセージ」を追記する関数を作れ！
+#
+# 【条件】
+# - ファイル名は "log.txt" とする
+# - 追記モードで書き込むこと（既存内容を消さない）
+# - メッセージの前に「今日の日付（例：2025-04-11）」を付けること
+# - メッセージは引数で渡されるものとする
+#
+# 【出力例】
+# 2025-04-11: 今日のPython修行、完了！
+
+import datetime
+with open("input.txt", "a", encoding="utf-8") as f:
+    date_today = datetime.date.today().isoformat()
+    f.write(f"\n{date_today}: 今日のPython修行、完了！")
+
+==================================================
+File: 2025/2025-04/2025-04-12/2024-04-12.py
+==================================================
+
+# 🥋【2025-04-12（土）｜Python道場・第十一問】
+# 🎯 お題：テキストファイルから、特定のキーワードを含む行だけを抽出して表示する関数を作れ！
+#
+# 【条件】
+# - ファイル名は "log.txt" とする（自分で用意してもOK！）
+# - 引数で渡された文字列を含む行だけを抽出し、リストで返すこと
+# - 大文字・小文字の違いは区別しなくてよい（＝どちらでもヒットするように）
+#
+# 【例】
+# log.txt の中身：
+# 2025-04-11: 今日のPython修行、完了！
+# 2025-04-12: 今日のJS修行、完了！
+#
+# extract_keyword_lines("python") → ["2025-04-11: 今日のPython修行、完了！"]
+
+def extract_keyword_lines(file_path, keyword):
+    with open(file_path, "r", encoding="utf-8") as f:
+        return [line.strip() for line in f.readlines() if keyword in line.strip().lower()]
+
+matchlines = extract_keyword_lines("log.txt", "python")
+print(matchlines)
+
+
+==================================================
+File: 2025/2025-04/2025-04-13/2025-04-13.py
+==================================================
+
+# 🥋【2025-04-13（日）｜Python道場・第十二問】
+# 🎯 お題：テキストファイルの全行を読み込み、各行に「行番号」をつけて表示する関数を作れ！
+#
+# 【条件】
+# - ファイル名は "log.txt" とする（内容は任意）
+# - 各行に対して「1行目から」順に番号を付けて表示
+# - 出力フォーマットは `"1: ○○○○"` のように、コロン+スペースで区切ること
+#
+# 【例】
+# log.txt の中身：
+# Hello
+# World
+#
+# 出力：
+# 1: Hello
+# 2: World
+
+
+with open("log.txt", "r",encoding="utf-8") as f:
+    lines = f.readlines()
+    for (index, line) in enumerate(lines):
+        print(f"{index+1}: {line.strip()}")
+
+with open("log.txt", "r",encoding="utf-8") as f:
+    for (index, line) in enumerate(f, start=1):
+        print(f"{index}: {line.strip()}")
+
+
+==================================================
+File: 2025/2025-04/2025-04-14/2025-04-14.py
+==================================================
+
+# 🥋【2025-04-14（月）｜Python道場・第十三問】
+# 🎯 お題："input.txt" から数字だけの行を抽出し、"output.txt" に書き出す関数を作れ！
+#
+# 【条件】
+# - "input.txt" には、数字の行・文字列の行・混合行が含まれている
+# - 数字だけの行（例："12345"）を抽出対象とする
+# - 行末の改行は適切に処理し、"output.txt" に改行付きで保存すること
+# - 書き出しファイルは `"w"` モード（上書き）
+#
+# 【例】
+# input.txt：
+# Hello
+# 12345
+# 67890
+# こんにちは
+#
+# → output.txt：
+# 12345
+# 67890
+
+# ファイルを開く
+# 行に分割する
+# forで回す
+#     改行消す
+#     行が数字だけか判定
+#         数字だけなら書き出し変数に追記
+
+# 文字列長さを確認
+#     0じゃなければoutput.txtに書き出す
+
+with open("2025-14-14-input.txt", "r", encoding="utf-8") as f:
+    result = []
+    lines = f.readlines()
+    for line in lines:
+        if line.strip().isdigit():
+            result.append(line.strip())
+
+if len(result) > 0:
+    with open("2025-04-14-output_standart.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(result))
+
+
+with open("2025-14-14-input.txt", "r", encoding="utf-8") as f:
+    result = "\n".join([line.strip() for line in f.readlines() if line.strip().isdigit()])
+
+if len(result) > 0:
+    with open("2025-04-14-output_listin.txt", "w", encoding="utf-8") as f:
+        f.write(result)
+
+==================================================
+File: 2025/2025-04/2025-04-15/2025-04-15.py
+==================================================
+
+# 🥋【2025-04-15（火）｜Python道場・第十四問】
+# 🎯 お題："sample.csv" の全行を、1から始まる行番号付きで表示する関数を作れ！
+#
+# 【条件】
+# - ファイル名は "sample.csv" とする（任意のCSV内容でOK）
+# - カンマ区切りのCSVファイルを読み込み、行単位で出力
+# - 出力フォーマットは「1: ['A', 'B', 'C']」のように、リスト表示でOK！
+# - 行番号は 1 から始めること
+#
+# 【例】
+# sample.csv の中身：
+# A,B,C
+# D,E,F
+#
+# 出力：
+# 1: ['A', 'B', 'C']
+# 2: ['D', 'E', 'F']
+
+import csv
+with open("sample.csv", "r", newline="", encoding="utf-8") as f:
+    for index, line in enumerate(csv.reader(f), start=1):
+        print(f"{index}: {line}")
+
+==================================================
+File: 2025/2025-04/2025-04-15-2/2025-04-15-2.py
+==================================================
+
+# 🥋【2025-04-15（火）｜Python道場・第十五問】
+# 🎯 お題："sample.csv" から、2列目の値だけを抽出してすべて表示する関数を作れ！
+#
+# 【条件】
+# - ファイル名は "sample.csv" とする（カンマ区切りのCSV）
+# - 1列目・3列目の値は無視して、2列目だけ表示すること
+# - 出力はリスト形式でOK！（["B", "E", ...] のような形式）
+#
+# 【例】
+# sample.csv の中身：
+# A,B,C
+# D,E,F
+#
+# 出力：
+# ['B', 'E']
+
+import csv
+with open("2025-04-15-2-sample.csv", "r", encoding="utf-8") as f:
+    lines = csv.reader(f)
+    print([row[1] for row in lines])
+
+with open("2025-04-15-2-sample.csv", "r", encoding="utf-8") as f:
+    print([row[1] for row in csv.reader(f)])
+
+
+==================================================
+File: 2025/2025-04/2025-04-16/2025-04-16.py
+==================================================
+
+# 🥋【2025-04-15（火）｜Python道場・第十六問】
+# 🎯 お題："sample.csv" の中から「2列目の値が 'Python'」の行だけを表示する関数を作れ！
+#
+# 【条件】
+# - ファイル名は "sample.csv" とする（カンマ区切り）
+# - 2列目（インデックス1）の値が "Python" の行だけを抽出する
+# - 出力形式はリストでOK！（[['A', 'Python', 'C'], ['D', 'Python', 'F']] など）
+#
+# 【例】
+# sample.csv の中身：
+# A,Python,C
+# D,Java,F
+# G,Python,I
+#
+# 出力：
+# [['A', 'Python', 'C'], ['G', 'Python', 'I']]
+
+import csv
+with open("2025-04-16-sample.csv", "r", encoding="utf-8") as f:
+    print([row for row in csv.reader(f) if row[1] == "Python"])
+
+==================================================
+File: 2025/2025-04/2025-04-16-2/2025-04-16-2.py
+==================================================
+
+# 🥋【2025-04-15（火）｜Python道場・第十七問】
+# 🎯 お題："sample.csv" から「2列目が 'Python' の行」だけを抽出し、
+#     "python_only.csv" に書き出す関数を作れ！
+#
+# 【条件】
+# - ファイル名："sample.csv"（読み取り元）・"python_only.csv"（書き出し先）
+# - 2列目（インデックス1）が "Python" の行だけを抽出
+# - 出力ファイルも **カンマ区切り形式（CSV）** にする
+# - 書き出しは上書き（"w"モード）とする
+#
+# 【例】
+# sample.csv の中身：
+# A,Python,C
+# D,Java,F
+# G,Python,I
+#
+# → python_only.csv に出力される内容：
+# A,Python,C
+# G,Python,I
+
+import csv
+with open("2025-04-16-2-sample.csv", "r", encoding="utf-8") as f:
+    matches = [row for row in csv.reader(f) if row[1] =="Python"]
+
+with open("2025-04-16-python_only.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    for match in matches:
+        writer.writerow(match)
+
+with open("2025-04-16-python_only.csv", "r", encoding="utf-8") as f:
+    print(f.read())
+
+==================================================
+File: 2025/2025-04/2025-04-16-3/2025-04-16-3.py
+==================================================
+
+# 🥋【2025-04-15（火）｜Python道場・第十八問】
+# 🎯 お題："sample.csv" の中身を読み取り、
+#     1行ごとに「行番号付き」で "log.txt" に出力せよ！
+#
+# 【条件】
+# - 読み取り元ファイル名："sample.csv"
+# - 書き出し先ファイル名："log.txt"
+# - 出力形式は「1: ['A', 'Python', 'C']」のようにする
+# - 行番号は 1 から始めること（`enumerate(..., start=1)` を使おう）
+# - 書き出しは **上書きモード（"w"）**
+
+import os
+import csv
+file_path = os.path.join(os.path.dirname(__file__), "sample.csv")
+with open(file_path, "r", encoding="utf-8") as f:
+    rows = [row for row in csv.reader(f)]
+    print(rows)
+
+file_path = os.path.join(os.path.dirname(__file__), "log.txt")
+with open(file_path, "w", newline="", encoding="utf-8") as f:
+    f.write("\n".join([f"{index}: {row}" for index, row in enumerate(rows, start=1)]))
+
+print(__file__)
+
+==================================================
+File: 2025/2025-04/2025-04-17/2025-04-17.py
+==================================================
+
+# 🥋【2025-04-17（水）｜Python道場・第十九問】
+# 🎯 お題："sample.csv" の中から「2列目に 'Python' が“含まれる”」行だけを抽出せよ！
+#
+# 【条件】
+# - ファイル名："sample.csv"
+# - 2列目（インデックス1）の値が "Python" を“含む”行だけを対象とする
+#   ※ 完全一致ではなく、「Python3」「I love Python」なども含める
+# - 結果はリストで出力すればOK（[['A', 'I love Python', 'C'], ...] など）
+import os
+import csv
+
+def generate_file_path(file_name):
+    return os.path.join(os.path.dirname(__file__), file_name)
+
+file_path = generate_file_path("sample.csv")
+
+with open(file_path, "r", encoding="utf-8") as f:
+    reader = csv.reader(f)
+    print([row for row in reader if "python" in row[1].lower()])
+
+
+==================================================
+File: 2025/2025-04/2025-04-17-2/2025-04-17-2.py
+==================================================
+
+# 🥋【2025-04-17（水）｜Python道場・第二十問】
+# 🎯 お題："sample.csv" の行数をカウントし、
+#     "log.txt" に「行数：◯行」と書き出せ！
+#
+# 【条件】
+# - ファイル名："sample.csv"（読み取り元）・"log.txt"（書き出し先）
+# - 結果の書き出し形式は：「行数：3行」など
+# - 書き出しは上書きモード（"w"）
+# - パスは `os.path.dirname(__file__)` を使って構築してみよう！（ステップ1練習！）
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+read_path = os.path.join(base_dir, "sample.csv")
+
+with open(read_path, "r", encoding="utf-8") as f:
+    reader = csv.reader(f)
+    rows = list(reader)
+
+save_path = os.path.join(base_dir, "log,txt")
+with open(save_path, "w", encoding="utf-8") as f:
+    f.write(f"行数：{len(rows)}行")
+    f.write(f"\n行数：{sum(1 for _ in rows)}行")
+
+
+==================================================
+File: 2025/2025-04/2025-04-18/2025-04-18.py
+==================================================
+
+# 🥋【2025-04-18（金）｜Python道場・第二十一問】
+# 🎯 お題："sample.csv" の中から「3列目が 'F' の行だけ」を抽出し、
+#     "log.txt" に書き出せ！
+#
+# 【条件】
+# - ファイル名："sample.csv"（読み取り元）・"log.txt"（書き出し先）
+# - 3列目（インデックス2）の値が "F" と一致する行だけを対象とする
+# - 書き出しは上書きモード（"w"）
+# - パスは `os.path.dirname(__file__)` を使って構築してみよう！
+# - 書き出しは `str(row)` または `",".join(row)` どちらでもOK！
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+file_path = os.path.join(base_dir, "sample.csv")
+
+with open(file_path, "r", encoding="utf-8") as f:
+    reader = list(csv.reader(f))
+
+file_path = os.path.join(base_dir, "log.txt")
+with open(file_path,"w", newline="", encoding="utf-8") as f:
+    for row in reader:
+        if row[2] == "F":
+            f.write(f"{",".join(row)}\n")
+
+
+==================================================
+File: 2025/2025-04/2025-04-18−2/2025-04-18-2.py
+==================================================
+
+# 🥋【2025-04-18（金）｜Python道場・第二十二問】
+# 🎯 お題："sample.csv" の中から「2列目に 'Python' を含む行」だけを抽出し、
+#     - "filtered.csv" に書き出す
+#     - 同時に行数を "log.txt" に書き出す
+#
+# 【条件】
+# - ファイル名：
+#     - 読み取り："sample.csv"
+#     - 書き出し："filtered.csv"（条件に合う行のみ）
+#     - ログ："log.txt"（"抽出件数：X件" という形式で書く）
+# - "Python" は部分一致（例："I love Python", "Pythonista" などもOK）
+# - 判定には大文字小文字を無視する（`.lower()` を使おう）
+# - 書き出し形式は CSV形式でOK（ `",".join(row)` または `writer.writerow(row)` ）
+# - パスは `os.path.dirname(__file__)` を使って構築すること
+
+import os, csv
+base_dir = os.path.dirname(__file__)
+
+# 読み込み
+file_path = os.path.join(base_dir, "sample.csv")
+with open(file_path, "r", encoding="utf-8") as f:
+    reader = list(csv.reader(f))
+
+# マッチ列の書き出し
+match_rows_count = 0
+file_path = os.path.join(base_dir, "filtered.csv")
+with open(file_path, "w", newline="", encoding="utf-8") as f:
+    for row in reader:
+        if "python" in row[1].lower():
+            f.write(f"{",".join(row)}\n")
+            match_rows_count += 1
+
+# マッチ行数の書き出し
+file_path = os.path.join(base_dir, "log.txt")
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(f"抽出件数：{match_rows_count}件")
+
+# 書き出し一行にしてみた
+file_path = os.path.join(base_dir, "log2.txt")
+with open(file_path, "w", newline="", encoding="utf-8") as f:
+    f.write("\n".join([f"{",".join(row)}" for row in reader if "python" in row[1].lower()]))
+
+
+==================================================
+File: 2025/2025-04/2025-04-19/2025-04-19.py
+==================================================
+
+# 🥋【2025-04-19（土）｜Python道場・第二十三問】
+# 🎯 お題："file1.csv" と "file2.csv" を読み込んで、
+#     すべての行を "merged.csv" に書き出せ！
+#
+# 【条件】
+# - 各ファイルの形式は同じとする（例：3列のCSV）
+# - 両ファイルにヘッダーはないものとする（単純なデータ行だけ）
+# - 書き出し先ファイル名は "merged.csv"
+# - ファイルの読み書きには `csv` モジュールを使うこと
+# - パスは `os.path.dirname(__file__)` を使って構築しよう！
+
+import os, csv
+
+base_dir = os.path.dirname(__file__)
+file1_path = os.path.join(base_dir, "file1.csv")
+file2_path = os.path.join(base_dir, "file2.csv")
+merged_path = os.path.join(base_dir, "merged.csv")
+
+with open(file1_path, "r", encoding="utf-8") as f1:
+    list_f1 = list(csv.reader(f1))
+
+with open(file2_path, "r", encoding="utf-8") as f2:
+    list_f2 = list(csv.reader(f2))
+
+with open(merged_path, "w", newline="", encoding="utf-8") as f3:
+    merged = csv.writer(f3)
+    for row in (list_f1 + list_f2):
+        merged.writerow(row)
+
+==================================================
+File: 2025/2025-04/2025-04-20/2025-04-20.py
+==================================================
+
+# 🥋【2025-04-20（日）｜Python道場・第二十四問】
+# 🎯 お題："sample.csv" の中から、
+#     2列目に "Python" を含む行だけを "filtered.csv" に出力せよ！
+#     また、ユーザーが「追記」or「上書き」を選べるようにせよ！
+#
+# 【条件】
+# - 入力ファイル名："sample.csv"
+# - 出力ファイル名："filtered.csv"
+# - 書き込みモードは "w"（上書き） or "a"（追記）を選択可能にすること
+# - "Python" を含むかの判定は部分一致 + 大文字小文字無視
+# - `input()` を使って `"追記しますか？ (y/n)"` みたいに聞いてもよい！
+# - 出力形式は CSV形式でOK（`",".join(row)` または `writer.writerow(row)`）
+
+import os, csv
+
+base_dir = os.path.dirname(__file__)
+sample_path = os.path.join(base_dir, "sample.csv")
+filtered_path = os.path.join(base_dir, "filtered.csv")
+
+# CSV読み込み
+with open(sample_path, "r", encoding="utf-8") as f:
+    extract_rows = [row for row in csv.reader(f) if "python" in row[1].lower()]
+    print(extract_rows)
+
+# 書き込みモード選択
+select = input("追記しますか？(y/n)")
+if select == "y":
+    write_mode = "a"
+elif select == "n":
+    write_mode = "w"
+else:
+    print("選択が正しくありません")
+
+# CSV書き出し
+with open(filtered_path, write_mode, newline="", encoding="utf-8") as f:
+    for row in extract_rows:
+        f.write(f"{",".join(row)}\n")
+
+==================================================
+File: 2025/2025-04/2025-04-21/task0421.py
+==================================================
+
+# 🥋【2025-04-21（月）｜Python道場・第二十五問】
+# 🎯 お題："sample.csv" を読み込み、
+#     まったく同じ行が2回以上出てくるものだけを "duplicated.csv" に書き出せ！
+#
+# 【条件】
+# - 入力ファイル："sample.csv"
+# - 出力ファイル："duplicated.csv"
+# - 行全体が同じであるもの（["A", "Python", "1"] など）が重複とみなされる
+# - 出力には**重複していた行だけ1度だけ**書き出せばOK
+# - `collections.Counter()` を使っても、辞書でカウントしてもOK！
+
+import os, csv
+from collections import Counter
+
+base_dir = os.path.dirname(__file__)
+sample_path = os.path.join(base_dir, "sample.csv")
+duplicated_path = os.path.join(base_dir, "duplicated.csv")
+
+with open(sample_path, "r", encoding="utf-8") as f:
+    rows = [tuple(row) for row in csv.reader(f)]
+
+with open(duplicated_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    for row,counter in Counter(rows).items():
+        if counter > 1:
+            writer.writerow(row)
+
+==================================================
+File: 2025/2025-04/2025-04-21-2/task20250421-2.py
+==================================================
+
+# 🥋【2025-04-21（月）｜Python道場・第二十六問】
+# 🎯 お題："sample.csv" から「2列目に 'Python' を含む行」だけを抽出し、
+#     - "filtered.csv" に出力せよ！
+#     - 同時に抽出件数を "log.txt" に書き出せ！
+#
+# 【条件】
+# - 抽出対象："Python" を含む行（部分一致・大文字小文字無視）
+# - 抽出行は CSV形式で書き出し
+# - ログには `"抽出件数：X件"` のように書き出すこと
+# - 書き込みはすべて上書きでよい（モード "w"）
+# - パスは `os.path.dirname(__file__)` で構成しよう！
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sample_path = os.path.join(base_dir, "sample.csv")
+filtered_path = os.path.join(base_dir, "filtered.csv")
+log_path = os.path.join(base_dir, "log.txt")
+
+# 読み込み
+with open(sample_path, "r", encoding="utf-8") as f:
+    rows = list(csv.reader(f))
+
+# 抽出
+filtered = [row for row in rows if "python" in row[1].lower()]
+
+# 抽出書き込み
+with open(filtered_path, "w", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    writer.writerows(filtered)
+
+# 件数書き込み
+with open(log_path, "w", encoding="utf-8") as f:
+    f.write(f"抽出件数：{len(filtered)}件")
+
+
+==================================================
+File: 2025/2025-04/2025-04-22/tast0422.py
+==================================================
+
+# 🥋【2025-04-22（火）｜Python道場・第二十七問】
+# 🎯 お題："sample.csv" の中から「1列目（インデックス0）に 'A' が含まれる行」だけを抽出し、
+#     "filtered.csv" に書き出せ！
+#
+# 【条件】
+# - 判定は部分一致でOK（例："AA", "Apple", "Amazing" など）
+# - 大文字小文字の区別はしない（".lower()" を使ってもOK）
+# - 出力は `csv.writer().writerows()` などでCSV形式に！
+# - 読み取り元："sample.csv"
+# - 書き出し先："filtered.csv"
+# - パスは `os.path.dirname(__file__)` で構築してみよう！
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sample_path = os.path.join(base_dir, "sample.csv")
+filtered_path = os.path.join(base_dir, "filtered.csv")
+
+# 読み取り
+with open(sample_path, "r", encoding="utf-8") as f:
+    reader = list(csv.reader(f))
+
+# 抽出
+matches = [row for row in reader if "A" in row[0].upper()]
+
+# 書き出し
+with open(filtered_path, "w", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    writer.writerows(matches)
+
+==================================================
+File: 2025/2025-04/2025-04-22-2/task0422-2.py
+==================================================
+
+# 🥋【2025-04-22（火）｜Python道場・第二十八問】
+# 🎯 お題："sample.csv" の中から「3列目（インデックス2）が 5 より大きい」行だけを抽出し、
+#     "filtered.csv" に書き出せ！
+#
+# 【条件】
+# - 3列目の値は「整数の文字列」として格納されている想定（例："1", "5", "10"）
+# - 判定のために int() に変換してから比較すること（例：`int(row[2]) > 5`）
+# - 読み取り元："sample.csv"
+# - 書き出し先："filtered.csv"
+# - 書き出しには `csv.writer().writerows()` を使ってOK！
+# - パスは `os.path.dirname(__file__)` で構築すること！
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sample_path = os.path.join(base_dir, "sample.csv")
+filtered_path = os.path.join(base_dir, "filtered.csv")
+
+# 読み取り
+with open(sample_path, "r", encoding="utf-8") as f:
+    rows = list(csv.reader(f))
+
+# 抽出
+try:
+    filtered_rows = [row for row in rows if int(row[2]) > 5]
+except ValueError as e:
+    print(e)
+else:
+    # 書き出し
+    with open(filtered_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerows(filtered_rows)
+        print("filter completed！")
+
+==================================================
+File: 2025/2025-04/2025-04-23/task0423.py
+==================================================
+
+# 🥋【2025-04-23（水）｜Python道場・第二十九問】
+# 🎯 お題："sample.csv" の中から「2列目（インデックス1）に 'Java' を含まない行」だけを抽出し、
+#     "filtered.csv" に書き出せ！
+#
+# 【条件】
+# - 判定は部分一致でOK（例："JavaScript" も含む）
+# - 'Java' を含ま**ない**行のみが対象
+# - 判定には `.lower()` を使ってもOK（"java" 大文字小文字は無視）
+# - 読み取り元："sample.csv"
+# - 書き出し先："filtered.csv"
+# - 書き出しは `csv.writer().writerows()` を使ってOK！
+# - パスは `os.path.dirname(__file__)` で構築してみよう！
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sample_path = os.path.join(base_dir, "sample.csv")
+filtered_path = os.path.join(base_dir, "filtered.csv")
+
+# ファイル開く
+with open(sample_path, "r", encoding="utf-8") as f:
+    reader = list(csv.reader(f))
+
+# 抽出
+tuple_rows = [tuple(row) for row in reader]
+filtered_rows = [row for row in tuple_rows if not "java" in row[1].lower()]
+
+# 書き出し
+with open(filtered_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    writer.writerows(filtered_rows)
+
+==================================================
+File: 2025/2025-04/2025-04-23-2/task0423-2.py
+==================================================
+
+# 🥋【2025-04-23（水）｜Python道場・第三十問】
+# 🎯 お題："sample.csv" の中から「3列目（インデックス2）が整数で偶数の行」だけを抽出し、
+#     "filtered.csv" に書き出せ！
+#
+# 【条件】
+# - 3列目は「文字列の数字」（例："1", "2", "10"）である想定
+# - `int(row[2])` で数値化してから `num % 2 == 0` を判定！
+# - ただし、数値化できない行があってもエラーにならないよう `try-except` で防ごう！
+# - 出力は CSV形式、`csv.writer().writerows()` を使用！
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sample_path = os.path.join(base_dir, "sample.csv")
+filtered_path = os.path.join(base_dir, "filtered.csv")
+
+# 読み込み
+with open(sample_path, "r", encoding="utf-8") as f:
+    reader = list(csv.reader(f))
+
+# 抽出
+filtered_rows = []
+for row in reader:
+    try:
+        num = int(row[2])
+        if isinstance(num, int) and num % 2 == 0:
+            filtered_rows.append(row)
+    except Exception as e:
+        print(e)
+        continue
+
+# 書き出し
+with open(filtered_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    writer.writerows(filtered_rows)
+
+==================================================
+File: 2025/2025-04/2025-04-24/task0424.py
+==================================================
+
+# 🥋【2025-04-24（木）｜Python道場・第三十一問】
+# 🎯 お題："file1.csv" と "file2.csv" を読み込み、
+#     「2列目（インデックス1）が 'Python'」の行だけを抽出し、
+#     "filtered.csv" に書き出せ！
+#
+# 【条件】
+# - 判定は大文字小文字を無視してOK（"python" in row[1].lower()）
+# - 読み取り元：file1.csv と file2.csv（どちらも同じ形式）
+# - 抽出した行は順番に書き出すこと
+# - 書き出しには `csv.writer().writerows()` を使ってOK！
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+f1_path = os.path.join(base_dir, "file1.csv")
+f2_path = os.path.join(base_dir, "file2.csv")
+filtered_path = os.path.join(base_dir, "filtered.csv")
+
+# 読み込み
+rows = []
+for path in (f1_path, f2_path):
+    with open(path, "r", encoding="utf-8") as f:
+        rows = rows + list(csv.reader(f))
+
+# 抽出
+filtered_rows = [row for row in rows if "python" == row[1].lower()]
+
+# 書き出し
+with open(filtered_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    writer.writerows(filtered_rows)
+
+==================================================
+File: 2025/2025-04/2025-04-25/task0425.py
+==================================================
+
+# 🥋【2025-04-25（金）｜Python道場・第三十二問】
+# 🎯 お題："file1.csv" と "file2.csv" を結合し、
+#     「3列目（インデックス2）を数値として昇順にソート」して、
+#     "sorted.csv" に出力せよ！
+#
+# 【条件】
+# - ソートキーは `int(row[2])` を使う（全て整数と仮定）
+# - 並び替えは昇順（小さい順）
+# - 結合と同時に抽出しても、分けて処理してもOK
+# - 書き出しには `csv.writer().writerows()` を使ってOK
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sorted_path = os.path.join(base_dir, "sorted.csv")
+
+# 読み込み
+rows =[]
+for path in ("file1.csv", "file2.csv"):
+    with open(os.path.join(base_dir, path), "r", encoding="utf-8") as f:
+        rows += list(csv.reader(f))
+
+# 並び替え
+rows.sort(key=lambda r: int(r[2]))
+
+# 書き出し
+with open(sorted_path, "w", newline="", encoding="utf-8") as f:
+    csv.writer(f).writerows(rows)
+
+==================================================
+File: 2025/2025-04/2025-04-25-2/task0425-2.py
+==================================================
+
+# 🥋【2025-04-25（金）｜Python道場・第三十三問（sort強化編）】
+# 🎯 お題："file1.csv" と "file2.csv" を読み込み、
+#     3列目（インデックス2）を数値として"降順"に並び替え、
+#     "sorted.csv" に出力せよ！
+#
+# 【条件】
+# - ソートキーは int(row[2])
+# - 大きい値が先に来る（reverse=True を使う）
+# - lambdaを使って書くこと
+# - 読み込みと書き出しは自由（1ファイルにまとめてもいい）
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sorted_path = os.path.join(base_dir, "sorted.csv")
+
+# 読み込み
+merge_rows = []
+for path in ("file1.csv", "file2.csv"):
+    with open(os.path.join(base_dir, path), "r", encoding="utf-8") as f:
+        merge_rows += list(csv.reader(f))
+
+# 並び替え
+merge_rows.sort(key=lambda r: int(r[2]), reverse=True)
+
+# 書き出し
+with open(sorted_path, "w", newline="", encoding="utf-8") as f:
+    csv.writer(f).writerows(merge_rows)
+
+==================================================
+File: 2025/2025-04/2025-04-26-2/2025-04-26/task0426.py
+==================================================
+
+# 🥋【2025-04-26（土）｜Python道場・第三十四問（sort強化編②）】
+# 🎯 お題："file1.csv" と "file2.csv" を読み込み、
+#     2列目に "Python" を含む行だけを抽出し、
+#     その中で3列目（インデックス2）を数値として"降順"に並び替え、
+#     "sorted_python.csv" に出力せよ！
+#
+# 【条件】
+# - フィルタ条件："Python"を含むかどうか（大文字小文字無視OK）
+# - ソートキーは int(row[2])
+# - ソートは降順（reverse=True）
+# - lambdaを使ってソート
+# - 読み込み、フィルタ、ソート、出力の流れをきれいに意識すること！
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sorted_python_path = os.path.join(base_dir, "sorted_python.csv")
+
+# 読み込み
+merge_rows = []
+for path in ("file1.csv", "file2.csv"):
+    with open(os.path.join(base_dir, path), "r", encoding="utf-8") as f:
+        merge_rows += list(csv.reader(f))
+
+# 抽出
+filtered_rows = [row for row in merge_rows if "python" in row[1].lower()]
+
+# 並び替え
+filtered_rows.sort(key=lambda row: int(row[2]), reverse=True)
+
+# 書き出し
+with open(sorted_python_path, "w", newline="", encoding="utf-8") as f:
+    csv.writer(f).writerows(filtered_rows)
+
+
+==================================================
+File: 2025/2025-04/2025-04-26-2/tast0426-2.py
+==================================================
+
+# 🥋【2025-04-26（土）｜Python道場・第三十五問（extend実戦編）】
+# 🎯 お題："file1.csv" と "file2.csv" を読み込み、
+#     2列目に "Python" を含む行だけを抽出し、
+#     抽出した行をすべてまとめて "filtered_python.csv" に出力せよ！
+#
+# 【条件】
+# - "Python" を含む行だけ（大文字小文字無視OK）
+# - ファイルごとにフィルタした後、リストに「まとめる」ときに`extend()`を使うこと！
+# - 書き出し時は行単位でCSV形式にすること
+#
+# 【ポイント】
+# - extend() を自然に使いこなす型を意識する！
+# - フィルタとマージの順番に注意する！
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+filtered_python_path = os.path.join(base_dir, "filtered_python.csv")
+
+# 読み込み
+filtered_rows = []
+for path in ("file1.csv", "file2.csv"):
+    with open(os.path.join(base_dir, path), "r", encoding="utf-8") as f:
+        # 抽出
+        extract_rows = [row for row in csv.reader(f) if "python" in row[1].lower()]
+
+        # 結合
+        filtered_rows.extend(extract_rows)
+
+# 書き出し
+with open(filtered_python_path, "w", newline="", encoding="utf-8") as f:
+    csv.writer(f).writerows(filtered_rows)
+
+==================================================
+File: 2025/2025-04/2025-04-27/task0427.py
+==================================================
+
+# 🥋【2025-04-27（日）｜Python道場・第三十六問（sort応用・複合キー）】
+# 🎯 お題："file1.csv" と "file2.csv" を読み込み、
+#     2列目に "Python" を含む行だけを抽出し、
+#     3列目（数値）を「降順」で並び替え、
+#     同じ数値だった場合は1列目（文字列）で「昇順」で並び替えよ！
+#
+# 【条件】
+# - まず3列目（インデックス2）を数値化して降順
+# - 次に1列目（インデックス0）を文字列昇順
+# - lambda式＋タプルのキーでsortすること
+# - extend()を使ってファイル結合もOK
+#
+# 【ポイント】
+# - ソートキーに (優先キー, サブキー) のタプルを渡すと複合キー並び替えできる！
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sorted_path = os.path.join(base_dir, "sorted.csv")
+
+# 読み込み＆結合
+merge_rows = []
+for path in ("file1.csv", "file2.csv"):
+    with open(os.path.join(base_dir, path), "r", encoding="utf-8") as f:
+        merge_rows.extend(csv.reader(f))
+
+# 抽出
+filtered_rows = [row for row in merge_rows if "python" in row[1].lower()]
+
+# 並び替え
+filtered_rows.sort(key=lambda row: (-int(row[2]), row[0]))
+
+# 書き出し
+with open(sorted_path, "w", newline="", encoding="utf-8") as f:
+    csv.writer(f).writerows(filtered_rows)
+
+==================================================
+File: 2025/2025-04/2025-04-28/task0428.py
+==================================================
+
+# 🥋【2025-04-28（月・祝）｜Python道場・第三十七問（sort最終奥義編）】
+# 🎯 お題："file1.csv" と "file2.csv" を読み込み、
+#     2列目に "Python" を含む行だけを抽出し、
+#     3列目（数値）を「降順」で並び替え、
+#     同じ数値なら1列目（文字列）も「降順」で並び替えよ！
+#
+# 【条件】
+# - 数値は -int() を使って降順
+# - 文字列は reverseテクニックを駆使して降順
+# - lambda式＋複合キーを作り、sortすること
+# - extend()を使ったファイル結合も引き続きOK
+#
+# 【ポイント】
+# - 複合キーで両方降順にするロジックを自然に操れるか！
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sorted_path1 = os.path.join(base_dir, "sorted1.csv")
+sorted_path2 = os.path.join(base_dir, "sorted2.csv")
+
+# 読み込み＆結合
+merge_rows = []
+for path in ("file1.csv","file2.csv"):
+    with open(os.path.join(base_dir, path), "r", encoding="utf-8") as f:
+        merge_rows.extend(csv.reader(f))
+
+# 抽出
+filtered_rows = [row for row in merge_rows if "python" in row[1].lower()]
+
+# 並び替え：すべて降順パターン
+filtered_rows.sort(key=lambda row: (int(row[2]), row[1]), reverse=True)
+
+# 書き出し：すべて降順パターン
+with open(sorted_path1, "w", newline="", encoding="utf-8") as f:
+    csv.writer(f).writerows(filtered_rows)
+
+# 並び替え：個別降順パターン
+filtered_rows.sort(key=lambda row: (-int(row[2]), "".join(reversed(row[1]))))
+
+# 書き出し：すべて降順パターン
+with open(sorted_path2, "w", newline="", encoding="utf-8") as f:
+    csv.writer(f).writerows(filtered_rows)
+
+
+==================================================
+File: 2025/2025-04/2025-04-29/task0429.py
+==================================================
+
+# 🥋【2025-04-28（月・祝）｜Python道場・第三十八問】
+# 🎯 お題：
+# "file1.csv" と "file2.csv" を読み込み、
+# 2列目に "Python" を含み、かつ
+# 3列目の数値が50以上の行だけを抽出し、
+# 3列目（数値）を「降順」で並び替え、
+# 同じ数値なら1列目（文字列）を「昇順」で並び替えよ！
+#
+# 【条件】
+# - extend()で2ファイル結合OK
+# - フィルタ時に数値比較する（int(row[2]) >= 50）
+# - 並び替えは key=lambda row: (-int(row[2]), row[0])
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sorted_path = os.path.join(base_dir, "sorted.csv")
+
+# 読み込み＆結合
+merge_rows = []
+for path in ("file1.csv", "file2.csv"):
+    with open(os.path.join(base_dir, path), "r", encoding="utf-8") as f:
+        merge_rows.extend(csv.reader(f))
+
+# 抽出
+filtered_rows = [row for row in merge_rows if "python" in row[1].lower() and int(row[2])>=50]
+
+# 並び替え
+filtered_rows.sort(key=lambda row: (-int(row[2]), row[0]))
+
+# 書き出し
+with open(sorted_path, "w", newline="", encoding="utf-8") as f:
+    csv.writer(f).writerows(filtered_rows)
+
+
+==================================================
+File: 2025/2025-04/2025-04-30/task0430.py
+==================================================
+
+# 🥋【2025-04-28（月）｜Python道場・第三十九問】
+# 🎯 お題：
+# "file1.csv" と "file2.csv" を読み込み、
+# 2列目に "Python" を含む行だけを抽出し、
+# かつ3列目が **数値に変換できる** 行だけを残し、
+# 3列目を「昇順」、同じ数値なら1列目（文字列）を「降順」で並び替えよ！
+#
+# 【条件】
+# - try/except を使って数値変換エラーを除外すること
+# - 並び替えは key=lambda row: (int(row[2]), "".join(reversed(row[0])))
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+sorted_path = os.path.join(base_dir, "sorted.csv")
+
+# 読み込み＆結合
+merge_rows = []
+for path in ("file1.csv", "file2.csv"):
+    with open(os.path.join(base_dir, path), "r", encoding="utf-8") as f:
+        merge_rows.extend(csv.reader(f))
+
+# 抽出
+filtered_rows = []
+for row in merge_rows:
+    if "python" in row[1].lower():
+        try:
+            int(row[2])
+            filtered_rows.append(row)
+        except ValueError as e:
+            print(f"{row[2]}:{e}")
+
+# 並び替え
+sorted_rows = sorted(filtered_rows, key=lambda row: (int(row[2]), "".join(reversed(row[1]))))
+
+# 書き出し
+with open(sorted_path, "w", newline="", encoding="utf-8") as f:
+    csv.writer(f).writerows(sorted_rows)
+
+
+==================================================
+File: 2025/2025-05/2025-05-01/2025-05-01.py
+==================================================
+
+# 🥋【2025-04-28（月・祝）｜Python道場・第三十九問】
+# 🎯 お題：
+# "file1.csv" と "file2.csv" を読み込み、
+# 2列目が "Python"（大文字小文字問わず）である行のみを抽出し、
+# その中で **完全一致の重複行を削除**して、
+# 新しいCSVファイルに出力せよ！
+#
+# 【条件】
+# - extend()で2ファイルを結合してOK
+# - 抽出条件は "python" in row[1].lower()
+# - 重複判定は「行全体が一致していること」
+# - 順序は元の出現順でよい（ソート不要）
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+filtered_path = os.path.join(base_dir, "filtered.csv")
+
+# 読み込み＆結合
+merge_rows = []
+for path in ("file1.csv", "file2.csv"):
+    with open(os.path.join(base_dir, path), "r", encoding="utf-8") as f:
+        merge_rows.extend(csv.reader(f))
+
+# 抽出
+filtered_rows = []
+for row in merge_rows:
+    if "python" in row[1].lower() and not(tuple(row) in filtered_rows):
+        filtered_rows.append(tuple(row))
+
+# 書き出し
+with open(filtered_path, "w", newline="", encoding="utf-8") as f:
+    csv.writer(f).writerows(filtered_rows)
+
+==================================================
+File: 2025/2025-05/2025-05-02/task0502.py
+==================================================
+
+# 🥋【2025-05-02（金）｜Python道場・第40問】
+# 🎯 お題：
+# file1.csv / file2.csv を読み込み、
+# 2列目が "Python"（大文字小文字問わず）である行のみを抽出し、
+# その中の3列目（数値）を合計して出力せよ！
+#
+# 【条件】
+# - extend()で2ファイル結合OK
+# - 抽出条件は `"python" in row[1].lower()`
+# - 合計は `sum()` を使っても、for文でもOK
+# - 出力は `print()`で表示するだけでOK（ファイル書き出しは不要）
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+total_path = os.path.join(base_dir, "total.csv")
+
+merge_rows = []
+for path in ("file1.csv", "file2.csv"):
+    with open(os.path.join(base_dir, path), "r", encoding="utf-8") as f:
+        merge_rows.extend(csv.reader(f))
+
+filtered_nums = [int(row[2]) for row in merge_rows if "python" in row[1].lower()]
+num_total = sum(filtered_nums)
+
+print(num_total)
+
+
+==================================================
+File: 2025/2025-05/2025-05-03/task0503.py
+==================================================
+
+# ----------------------------------------
+# 🥋 Python道場【41問目】
+#
+# お題：
+# 次の条件をすべて満たす行だけを抽出し、
+# 3列目（数値）で昇順に並び替えて、filtered.csv に書き出せ！
+#
+# 条件：
+# - file1.csv と file2.csv を読み込む
+# - 2列目に "Python" を含む（大文字・小文字は問わない）
+# - 1列目が "A" で始まる行だけ抽出する
+#
+# 出力：
+# - 抽出した行を filtered.csv に書き出すこと
+# - ソートは 3列目の数値（昇順）
+# ----------------------------------------
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+filtered_path = os.path.join(base_dir, 'filtered.csv')
+
+# 読み込み＆結合
+merge_rows = []
+for path in ("file1.csv", "file2.csv"):
+    with open(os.path.join(base_dir, path), 'r', encoding='utf-8') as f:
+        merge_rows.extend(csv.reader(f))
+
+# 抽出&並び替え
+filtered_rows = []
+for row in merge_rows:
+    if row[0].startswith("A") and "python" in row[1].lower():
+        filtered_rows.append(row)
+
+filtered_rows.sort(key=lambda row: int(row[2]))
+
+with open(filtered_path, 'w', newline='', encoding='utf-8') as f:
+    csv.writer(f).writerows(filtered_rows)
+
+
+==================================================
+File: 2025/2025-05/2025-05-03-2/task0503-2.py
+==================================================
+
+# 🥋【2025-05-03（土）｜Python道場・第四十二問（DictReader導入編）】
+# 🎯 お題："data.csv" を読み込み、各行を辞書形式で表示する関数を作れ！
+#
+# 【条件】
+# - 読み取り元ファイル名："data.csv"
+# - CSVの1行目はヘッダー（列名）として扱うこと
+# - `csv.DictReader()` を使って読み込むこと
+# - 出力は `print()` で1行ずつ辞書を表示すればOK
+#
+# 【例】
+# data.csv の中身：
+# name,language,level
+# Alice,Python,Expert
+# Bob,Java,Intermediate
+#
+# 出力：
+# {'name': 'Alice', 'language': 'Python', 'level': 'Expert'}
+# {'name': 'Bob', 'language': 'Java', 'level': 'Intermediate'}
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+data_path = os.path.join(base_dir, "data.csv")
+
+with open(data_path, "r", encoding="utf-8") as f:
+    for row in csv.DictReader(f):
+        print(row)
+
+
+==================================================
+File: 2025/2025-05/2025-05-04/task0504.py
+==================================================
+
+# 🥋【2025-05-04（日）｜Python道場・第四十三問（DictReader活用編）】
+# 🎯 お題："data.csv" を読み込み、「language」列が「Python」である行だけを辞書形式で表示せよ！
+#
+# 【条件】
+# - 読み取り元ファイル名："data.csv"（ヘッダーは name,language,level）
+# - `csv.DictReader()` を使って読み込むこと
+# - `row['language']` を使って条件判定すること
+# - 抽出した行（辞書）をそのまま `print()` で表示すればOK
+#
+# 【例】
+# data.csv の中身：
+# name,language,level
+# Alice,Python,Expert
+# Bob,Java,Intermediate
+# Charlie,Python,Beginner
+#
+# 出力：
+# {'name': 'Alice', 'language': 'Python', 'level': 'Expert'}
+# {'name': 'Charlie', 'language': 'Python', 'level': 'Beginner'}
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+data_path = os.path.join(base_dir, "data.csv")
+
+with open(data_path, "r", newline="", encoding="utf-8") as f:
+    for row in csv.DictReader(f):
+        if "python" == row["language"].lower():
+            print(row)
+
+
+==================================================
+File: 2025/2025-05/2025-05-05/task0505.py
+==================================================
+
+# 🥋【2025-05-05（月）｜Python道場・第四十四問（DictReaderフィルタ＆抽出編）】
+# 🎯 お題："users.csv" を読み込み、'level' が 'Expert' の人の 'name' だけを表示せよ！
+#
+# 【条件】
+# - 読み取り元ファイル名："users.csv"（ヘッダーは name,email,level）
+# - `csv.DictReader()` を使って読み込むこと
+# - `row['level'] == 'Expert'` の行だけを抽出する
+# - 抽出した行の中から `row['name']` の値だけを `print()` で表示すること（1行に1人）
+#
+# 【例】
+# users.csv の中身：
+# name,email,level
+# Alice,alice@ex.com,Expert
+# Bob,bob@ex.com,Intermediate
+# Charlie,charlie@ex.com,Expert
+# David,dave@ex.com,Beginner
+#
+# 出力：
+# Alice
+# Charlie
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+users_path = os.path.join(base_dir, "users.csv")
+
+with open(users_path, "r", newline="", encoding="utf-8") as f:
+    for row in csv.DictReader(f):
+        if "Expert" == row["level"]:
+            print(row["name"])
+
+
+==================================================
+File: 2025/2025-05/2025-05-05-2/task0505-2.py
+==================================================
+
+# 🥋【2025-05-05（月）｜Python道場・第四十五問（DictReader & DictWriter編）】
+# 🎯 お題："users.csv" を読み込み、'level' が 'Expert' の行だけを抽出し、
+#     そのユーザーの「name」と「email」だけを "experts.csv" に書き出せ！
+#
+# 【条件】
+# - 読み取り元ファイル名："users.csv"（ヘッダーは name,email,level）
+# - 書き出し先ファイル名："experts.csv"（ヘッダーは name,email）
+# - 読み込みには `csv.DictReader()` を使うこと
+# - 書き出しには `csv.DictWriter()` を使うこと
+# - `DictWriter` を使う際は、書き出す列（フィールド名）を指定すること
+# - ヘッダー行も書き出すこと (`writer.writeheader()`)
+#
+# 【例】
+# users.csv の中身：
+# name,email,level
+# Alice,alice@ex.com,Expert
+# Bob,bob@ex.com,Intermediate
+# Charlie,charlie@ex.com,Expert
+# David,dave@ex.com,Beginner
+#
+# → experts.csv に出力される内容：
+# name,email
+# Alice,alice@ex.com
+# Charlie,charlie@ex.com
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+users_path = os.path.join(base_dir, "users.csv")
+experts_path = os.path.join(base_dir, "experts.csv")
+
+with open(users_path, "r", newline="", encoding="utf-8") as f:
+    filtered_rows = [row for row in csv.DictReader(f) if row["level"] == "Expert"]
+
+with open(experts_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f,["name", "email"])
+    writer.writeheader()
+    for row in filtered_rows:
+        expert_row = {"name" : row["name"], "email" : row["email"]}
+        writer.writerow(expert_row)
+
+
+==================================================
+File: 2025/2025-05/2025-05-05-3/0505-3task.py
+==================================================
+
+# 🥋【2025-05-06（火）｜Python道場・第四十六問（DictWriterの応用・カラム追加編）】
+# 🎯 お題："users.csv" を読み込み、全ユーザーのデータに 'is_expert' カラムを追加し、
+#     "users_labeled.csv" に出力せよ！
+
+# 【条件】
+# - 読み取り元ファイル名："users.csv"（ヘッダー：name,email,level）
+# - 書き出し先ファイル名："users_labeled.csv"
+# - `csv.DictReader()` で読み込み
+# - `csv.DictWriter()` で書き込み
+# - 追加カラム：'is_expert' を各辞書に追加
+#     - 'level' が 'Expert' の場合 → 'is_expert': 'yes'
+#     - それ以外の場合 → 'is_expert': 'no'
+# - 書き出しのフィールド順は「元の3カラム + is_expert」の順
+# - ヘッダー行も含めて書き出す（`writer.writeheader()`）
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+users_path = os.path.join(base_dir, "0505-3users.csv")
+users_loaded_path = os.path.join(base_dir, "0505-3users_loaded.csv")
+
+users_labeled = []
+with open(users_path, "r", newline="", encoding="utf-8") as f:
+    for row in csv.DictReader(f):
+        if "Expert" == row["level"]:
+            row["is_expert"] = "yes"
+        else:
+            row["is_expert"] = "no"
+
+        users_labeled.append(row)
+
+with open(users_loaded_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, ["name", "email", "level", "is_expert"])
+    writer.writeheader()
+    writer.writerows(users_labeled)
+
+
+==================================================
+File: 2025/2025-05/2025-05-06/task0506.py
+==================================================
+
+# 🥋【2025-05-06（火）｜Python道場・第四十六問（Dictデータ加工＆書き出し編）】
+# 🎯 お題："users.csv" を読み込み、'level' が 'Expert' の行だけを抽出し、
+#     そのユーザーの「nameを大文字にしたもの」と「emailにドメイン(@company.com)を付与したもの」を
+#     "processed_experts.csv" に書き出せ！
+#
+# 【条件】
+# - 読み取り元ファイル名："users.csv"（ヘッダーは name,email,level）
+# - 書き出し先ファイル名："processed_experts.csv"
+# - 書き出し先のヘッダーは `NAME,full_email` とすること
+# - 読み込みには `csv.DictReader()` を使うこと
+# - 書き出しには `csv.DictWriter()` を使うこと
+# - 処理内容：
+#     - `level` が 'Expert' の行のみ対象
+#     - 書き出す辞書には 'NAME' キーで `row['name'].upper()` の値を格納
+#     - 書き出す辞書には 'full_email' キーで `f"{row['email']}@company.com"` の値を格納
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+users_path = os.path.join(base_dir, "users.csv")
+experts_path = os.path.join(base_dir, "processed_experts.csv")
+
+expert_rows = []
+with open(users_path, "r", newline="", encoding="utf-8") as f:
+    for row in csv.DictReader(f):
+        if "Expert" == row["level"]:
+            expert_rows.append(row)
+
+expert_rows_edited = []
+for row in expert_rows:
+    expert_rows_edited.append({
+        "NAME" : row["name"].upper()
+        ,"full_email" : row["email"] + "@company.com"
+    })
+
+with open(experts_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=["NAME", "full_email"])
+    writer.writeheader()
+    writer.writerows(expert_rows_edited)
+
+
+==================================================
+File: 2025/2025-05/2025-05-07/task0507.py
+==================================================
+
+# 🥋【2025-05-06（火）｜Python道場・第四十七問（DictReader条件抽出＆ファイル書き出し編）】
+# 🎯 お題："users.csv" を読み込み、'level' が 'Intermediate' のユーザーだけを抽出し、
+#     'name' と 'email' のみを "intermediate_users.csv" に書き出せ！
+#
+# 【条件】
+# - 読み取り元ファイル名："users.csv"（ヘッダーは name,email,level）
+# - 書き出し先ファイル名："intermediate_users.csv"
+# - `csv.DictReader()` を使って読み込むこと
+# - `csv.DictWriter()` を使って書き出すこと
+# - 抽出条件は `row['level'] == 'Intermediate'`
+# - 出力CSVにはヘッダー行も含めること
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+users_path = os.path.join(base_dir, "users.csv")
+intermediate_users_path = os.path.join(base_dir, "intermediate_users.csv")
+
+filtered_rows = []
+with open(users_path, "r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        if row["level"] == "Intermediate":
+            filtered_rows.append({
+                "name" : row["name"],
+                "email" : row["email"]
+            })
+
+with open(intermediate_users_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=["name", "email"])
+    writer.writeheader()
+    writer.writerows(filtered_rows)
+
+
+==================================================
+File: 2025/2025-05/2025-05-08/task2025-05-08.py
+==================================================
+
+# 🥋【2025-05-07（水）｜Python道場・第四十八問（DictReader条件抽出 & 集約編）】
+# 🎯 お題："users.csv" を読み込み、各 "level" ごとに所属するユーザー数をカウントし、
+#     結果を "level_summary.csv" に書き出せ！
+#
+# 【条件】
+# - 読み取り元ファイル名："users.csv"（ヘッダーは name,email,level）
+# - 書き出し先ファイル名："level_summary.csv"
+# - `csv.DictReader()` を使って読み込むこと
+# - 集約結果は以下の形式で書き出すこと
+#
+# 【出力例】
+# level,count
+# Expert,2
+# Intermediate,3
+# Beginner,1
+#
+# 【ヒント】
+# - 集約には `collections.Counter` が便利
+# - カウント結果は辞書形式で保持できる
+# - CSV書き出しには `csv.writer()` を使うこと
+
+import os
+import csv
+from collections import Counter
+
+base_dir = os.path.dirname(__file__)
+users_path = os.path.join(base_dir, "users.csv")
+level_summary_path = os.path.join(base_dir, "level_summary.csv")
+
+with open(users_path, "r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    levels = [row["level"] for row in reader]
+    level_counts = Counter(levels)
+
+level_counts_rows = [{"level":key,"count":value} for key, value in level_counts.items()]
+
+with open(level_summary_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f,fieldnames=["level", "count"])
+    writer.writeheader()
+    writer.writerows(level_counts_rows)
+
+
+==================================================
+File: 2025/2025-05/2025-05-09/task0509.py
+==================================================
+
+# 🥋【2025-05-06（火）｜Python道場・第四十八問（DictReader応用編・重複排除）】
+# 🎯 お題："users.csv" を読み込み、'email' が重複する行を除外した結果を
+#     "unique_users.csv" に書き出せ！
+#
+# 【条件】
+# - 読み取り元ファイル名："users.csv"（ヘッダーは name,email,level）
+# - 書き出し先ファイル名："unique_users.csv"
+# - `csv.DictReader()` を使って読み込むこと
+# - `csv.DictWriter()` を使って書き出すこと
+# - 重複チェックの基準は「email」列
+# - **最初に出てきた行だけ残し、それ以降の重複は無視する**
+# - 出力CSVにはヘッダー行も含めること
+#
+# 【例】
+# users.csv の中身：
+# name,email,level
+# Alice,alice@example.com,Expert
+# Bob,bob@example.com,Intermediate
+# Charlie,charlie@example.com,Beginner
+# Dave,alice@example.com,Intermediate
+#
+# → unique_users.csv に出力される内容：
+# name,email,level
+# Alice,alice@example.com,Expert
+# Bob,bob@example.com,Intermediate
+# Charlie,charlie@example.com,Beginner
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+users_path = os.path.join(base_dir, "users.csv")
+unique_users_path = os.path.join(base_dir, "unique_users.csv")
+
+unique_email = set()
+unique_rows = []
+with open(users_path, "r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        if row["email"] not in unique_email:
+            unique_email.add(row["email"])
+            unique_rows.append(row)
+
+with open(unique_users_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f,fieldnames=["name","email","level"])
+    writer.writeheader()
+    writer.writerows(unique_rows)
+
+
+==================================================
+File: 2025/2025-05-10/task0510.py
+==================================================
+
+# 🥋【2025-05-10（水）｜Python道場・第四十九問（DictReader & Merge編）】
+# 🎯 お題："users1.csv" と "users2.csv" を読み込み、
+#     メールアドレスをキーに結合した結果を "merged_users.csv" に書き出せ！
+#
+# 【条件】
+# - 読み取り元ファイル名："users1.csv"、"users2.csv"（ヘッダーは name,email,level）
+# - 書き出し先ファイル名："merged_users.csv"
+# - `csv.DictReader()` を使って読み込むこと
+# - `csv.DictWriter()` を使って書き出すこと
+# - **メールアドレス（email）** をキーとして、`users1` のデータを優先して結合
+# - 結合後は、重複しない行も含めて全て出力する
+# - ヘッダー行も含めて書き出すこと
+#
+# 【例】
+# users1.csv の中身：
+# name,email,level
+# Alice,alice@example.com,Expert
+# Bob,bob@example.com,Intermediate
+# Charlie,charlie@example.com,Beginner
+#
+# users2.csv の中身：
+# name,email,level
+# Bob,bob@example.com,Advanced
+# Dave,dave@example.com,Intermediate
+# Eve,eve@example.com,Expert
+#
+# → merged_users.csv に出力される内容：
+# name,email,level
+# Alice,alice@example.com,Expert
+# Bob,bob@example.com,Intermediate
+# Charlie,charlie@example.com,Beginner
+# Dave,dave@example.com,Intermediate
+# Eve,eve@example.com,Expert
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+users1_path = os.path.join(base_dir, "users1.csv")
+users2_path = os.path.join(base_dir, "users2.csv")
+merged_users_path = os.path.join(base_dir, "merged_users.csv")
+
+used_emails = set()
+merge_rows = []
+csv_fieldnames = []
+for path in (users1_path, users2_path):
+    with open(path, "r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        csv_fieldnames = csv_fieldnames or reader.fieldnames
+        for row in reader:
+            if  row["email"] not in used_emails:
+                used_emails.add(row["email"])
+                merge_rows.append(row)
+
+with open(merged_users_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f,fieldnames=csv_fieldnames)
+    writer.writeheader()
+    writer.writerows(merge_rows)
+
+
+==================================================
+File: 2025/2025-05-10-2/task05-10-2.py
+==================================================
+
+# 🥋【2025-05-10（水）｜Python道場・第五十問（DictReader・条件付き合併編）】
+# 🎯 お題："users1.csv" と "users2.csv" を読み込み、
+#     メールアドレスが両方に存在するユーザーだけを抽出し、
+#     "common_users.csv" に書き出せ！
+#
+# 【条件】
+# - 読み取り元ファイル名："users1.csv"、"users2.csv"（ヘッダーは name,email,level）
+# - 書き出し先ファイル名："common_users.csv"
+# - `csv.DictReader()` を使って読み込むこと
+# - `csv.DictWriter()` を使って書き出すこと
+# - **両方のファイルに存在するメールアドレス** を基準に抽出する
+# - 出力CSVにはヘッダー行も含めること
+#
+# 【例】
+# users1.csv の中身：
+# name,email,level
+# Alice,alice@example.com,Expert
+# Bob,bob@example.com,Intermediate
+# Charlie,charlie@example.com,Beginner
+#
+# users2.csv の中身：
+# name,email,level
+# Bob,bob@example.com,Advanced
+# Dave,dave@example.com,Intermediate
+# Eve,eve@example.com,Expert
+#
+# → common_users.csv に出力される内容：
+# name,email,level
+# Bob,bob@example.com,Intermediate
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+users1_path = os.path.join(base_dir, "users1.csv")
+users2_path = os.path.join(base_dir, "users2.csv")
+common_users_path = os.path.join(base_dir, "common_users.csv")
+
+# ベースになるCSVを読み込み
+with open(users1_path, "r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    users1 = list(reader)
+    csv_fieldnames = reader.fieldnames
+
+# 重複判定用のCSVを読み込んで、メールアドレスだけsetで抽出
+with open(users2_path, "r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    users2_emails = {row["email"] for row in reader}
+
+# ベース配列を回してメアド重複判定、重複したら書き出し配列に格納
+duplicate_email_rows = []
+for row in users1:
+    if row["email"] in users2_emails:
+        duplicate_email_rows.append(row)
+
+# 書き出し処理
+with open(common_users_path, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=csv_fieldnames)
+    writer.writeheader()
+    writer.writerows(duplicate_email_rows)
+
+
+==================================================
+File: 2025/2025-05-11/task0511.py
+==================================================
+
+# 🥋【2025-05-11（日）｜Python道場・第五十一問（DictReader 条件フィルタリング＆特定の列抽出）】
+# 🎯 お題：sales_data.csv を DictReader で読み込みます。
+# 'Quantity' が 3 より大きく、かつ 'Region' が 'East' である全ての取引を抽出してください。
+# 抽出した行から、'Product' と 'Quantity' の情報だけを含む新しい辞書のリストを作成し、表示してください。
+#
+# 【条件】
+# - 読み取り元ファイル名：sales_data.csv (別途用意)
+# - csv.DictReader() を使用すること
+# - フィルタ条件: 'Quantity' が 3 より大きい AND 'Region' が 'East'
+# - Quantity の値は文字列で読み込まれるため、数値比較には int() に変換が必要
+# - 結果として、以下の形式のリストを作成し、print() で表示すること:
+#   例: [{'Product': 'Banana', 'Quantity': 10}, {'Product': 'Orange', 'Quantity': 4}, ...]
+#
+# ヒント: DictReaderで読み込んだ各行（辞書）に対して if 文で条件判定を行います。
+# 条件に合う行が見つかったら、その行の辞書から必要なキー ('Product', 'Quantity') だけを取り出して新しい辞書を作成し、あらかじめ用意しておいたリストに追加します。
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+data_path = os.path.join(base_dir, "sales_data.csv")
+
+with open(data_path, "r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    filtered_rows = [row for row in reader if int(row["Quantity"]) > 3 and row["Region"] == "East"]
+    export_rows = [{"Product":row["Product"], "Quantity":row["Quantity"]} for row in filtered_rows]
+
+print(export_rows)
+
+
+==================================================
+File: 2025/2025-05-12/task0512.py
+==================================================
+
+# 🥋【2025-05-12（月）｜Python道場・第五十二問（DictReader 応用・複数条件フィルタ＆合計）】
+# 🎯 お題：sales_data.csv を DictReader で読み込みます。
+# 'Category' が 'Fruit' または 'Dairy' であり、かつ 'Price' が 100 より大きい全ての取引について、
+# その 'Quantity' の合計を計算して表示してください。
+#
+# 【条件】
+# - 読み取り元ファイル名：sales_data.csv (別途用意)
+# - csv.DictReader() を使用すること
+# - フィルタ条件: ('Category' が 'Fruit' OR 'Category' が 'Dairy') AND ('Price' が 100 より大きい)
+# - Quantity と Price の値は文字列で読み込まれるため、int() に変換が必要
+# - Price 列が数値に変換できない行は無視してください。（try-except を使うことを推奨）
+# - 条件に合う取引の Quantity の合計を計算し、print() で表示すること
+#
+# ヒント: ループ内で複数の条件を組み合わせた if 文を使います。数値変換が必要な列のアクセスには try-except を挟むと安全です。条件に合う行の Quantity を合計用の変数に加算していきます。
+
+# import csv
+# import os # osモジュールが必要な場合はインポートしてください
+
+# ファイルパスは sales_data.csv を参照するように適宜修正してください
+# 例: file_path = 'sales_data.csv'
+# 例: file_path = os.path.join(os.path.dirname(__file__), 'sales_data.csv')
+# file_path = 'sales_data.csv' # 必要に応じて変更してください
+
+# ここに解答コードを記述してください
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+data_path = os.path.join(base_dir, "sales_data.csv")
+
+Quantity_total = 0
+with open(data_path, "r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        if row["Category"] == "Fruit" or row["Category"] == "Dairy":
+            try:
+                if int(row["Price"]) > 100:
+                    try:
+                        Quantity_total += int(row["Quantity"])
+                    except ValueError as e:
+                        print(f"TransactionID : {row["TransactionID"]} is ValueError Quantity : {row["Quantity"]}")
+                        continue
+
+            except ValueError as e:
+                print(f"TransactionID : {row["TransactionID"]} is ValueError Price : {row["Price"]}")
+                continue
+
+print(Quantity_total)
+
+
+==================================================
+File: 2025/2025-05-12-2/task0512-2.py
+==================================================
+
+# 🥋【2025-05-12（月）｜Python道場・第五十三問（DictReader 応用・日付フィルタと集計）】
+# 🎯 お題：sales_data.csv を DictReader で読み込みます。
+# 'Date' が '2023-04-01' 以降の取引について、
+# その 'Price' の合計を計算して表示してください。
+#
+# 【条件】
+# - 読み取り元ファイル名：sales_data.csv (別途用意)
+# - csv.DictReader() を使用すること
+# - フィルタ条件: 'Date' が '2023-04-01' 以降
+# - Price の値は文字列で読み込まれるため、int() に変換が必要
+# - Date の比較は文字列として行っても、datetimeオブジェクトに変換して行っても構いません。
+# - Price 列が数値に変換できない行は無視してください。（try-except を使うことを推奨）
+# - 条件に合う取引の Price の合計を計算し、print() で表示すること
+#
+# ヒント:
+# 日付文字列の比較は、Y-M-D形式であれば通常の文字列比較演算子（>=など）で行うことができます。
+# より厳密な日付処理には datetime モジュールが使えます。
+# 合計用の変数を用意し、ループ内で条件に合う行の Price を安全に（try-exceptを使って）加算していきます。
+
+# ここに解答コードを記述してください
+
+import os
+import csv
+import datetime
+
+base_dir = os.path.dirname(__file__)
+data_path = os.path.join(base_dir, "sales_data.csv")
+
+price_total = 0
+with open(data_path, "r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        row_date_str = row.get("Date")
+        if row_date_str and "2023-04-01" <= row_date_str:
+            try:
+                row_price = int(row.get("Price","0"))
+                price_total += int(row_price)
+            except ValueError:
+                print(f"TransactionID : {row["TransactionID"]} is ValueError Price : {row["Price"]}")
+                continue
+
+print(price_total)
+
+
+==================================================
+File: 2025/2025-05-13/task0513.py
+==================================================
+
+# 🥋【2025-05-13（火）｜Python道場・第五十四問（DictReader 応用・フィルタリングとカウント集約）】
+# 🎯 お題：sales_data.csv を DictReader で読み込みます。
+# 'Category' が 'Fruit' であり、かつ 'Quantity' が 5 以上の全ての取引について、
+# その数をカウントして表示してください。
+#
+# 【条件】
+# - 読み取り元ファイル名：sales_data.csv (別途用意)
+# - csv.DictReader() を使用すること
+# - フィルタ条件: 'Category' が 'Fruit' AND 'Quantity' が 5 以上
+# - Quantity の値は文字列で読み込まれるため、数値比較には int() に変換が必要
+# - Quantity 列が数値に変換できない行は無視してください。（try-except を使うことを推奨）
+# - 条件に合う取引の数をカウントし、print() で表示すること
+#
+# ヒント:
+# カウント用の変数を用意し、ループ内で条件に合う行が見つかるたびにその変数を増やします。
+# Quantity の数値変換には try-except を使って安全に行いましょう。
+
+import os
+import csv
+
+base_dir = os.path.dirname(__file__)
+data_path = os.path.join(base_dir, "sales_data.csv")
+
+filtered_match_count = 0
+with open(data_path, "r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        row_category = row.get("Category")
+        try:
+            row_quantity = int(row.get("Quantity", "0"))
+        except ValueError:
+            print(f"TransactionID : {row.get("TransactionID", "N/A")}  Quantity is ValueError {row.get("Quantity")}")
+            continue
+
+        if row_category == "Fruit" and row_quantity > 5:
+            filtered_match_count += 1
+
+print(filtered_match_count)
+
+
+
+==================================================
+File: 2025/2025-05-14/task0514.py
+==================================================
+
+# 🥋【2025-05-14（水）｜Python道場・第五十五問（DictReader 応用・フィルタ＆データ加工）】
+# 🎯 お題：sales_data.csv を DictReader で読み込みます。
+# 'Region' が 'North' または 'South' である取引を抽出し、
+# 抽出した各取引について、Product 名をすべて大文字に変換し、
+# 新しい辞書のリストとして表示してください。
+#
+# 【条件】
+# - 読み取り元ファイル名：sales_data.csv (別途用意)
+# - csv.DictReader() を使用すること
+# - フィルタ条件: 'Region' が 'North' または 'South'
+# - 抽出した行の 'Product' の値を `.upper()` メソッドで全て大文字に変換すること
+# - 結果として、変換後の 'Product' を含む辞書のリストを作成し、print() で表示すること
+#   （元の行の他のキー/値は含めなくて良い）
+#   例: [{'Product': 'APPLE'}, {'Product': 'MILK'}, ...]
+#
+# ヒント:
+# ループ内で Region の条件判定を行います。
+# 条件に合う行が見つかったら、その行の 'Product' の値を取り出し、.upper() で変換します。
+# 変換した値を新しい辞書に格納し、リストに追加していきます。
+
+# ここに解答コードを記述してください
+import csv
+import os
+
+base_dir = os.path.dirname(__file__)
+data_path = os.path.join(base_dir, "sales_data.csv")
+
+matched_rows = []
+with open(data_path, "r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        if row["Region"] in ("North", "South"):
+            matched_rows.append({
+                "Product" : row["Product"].upper()
+            })
+
+print(matched_rows)
+
+
+==================================================
+File: 2025/2025-05-15/task0515.py
+==================================================
+
+# 🥋【2025-05-15（木）｜Python道場・第五十六問（DictReader 応用・複数日付フィルタと合計）】
+# 🎯 お題：sales_data.csv を DictReader で読み込みます。
+# 'Date' が '2023-03-01' から '2023-04-30' までの期間に含まれる全ての取引について、
+# その 'Price' の合計を計算して表示してください。
+#
+# 【条件】
+# - 読み取り元ファイル名：sales_data.csv (別途用意)
+# - csv.DictReader() を使用すること
+# - フィルタ条件: 'Date' が '2023-03-01' 以上 AND '2023-04-30' 以下
+# - Price の値は文字列で読み込まれるため、int() に変換が必要
+# - Date の比較は文字列として行っても、datetimeオブジェクトに変換して行っても構いません。
+# - Price 列が数値に変換できない行は無視してください。（try-except を使うことを推奨）
+# - 条件に合う取引の Price の合計を計算し、print() で表示すること
+#
+# ヒント: 日付文字列の範囲比較は、Y-M-D形式であれば通常の文字列比較演算子（>=, <=など）を組み合わせて行うことができます。Price の数値変換が必要な箇所には try-except を挟むと安全です。合計用の変数を用意し、ループ内で条件に合う行の Price を加算していきます。
+
+# ここに解答コードを記述してください
+import os
+import csv
+from datetime import datetime
+dir_path = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(dir_path, "sales_data.csv")
+
+min_date = "2023-03-01"
+max_date = "2023-04-30"
+total_price = 0
+
+def is_valid_date(date_str):
+    try:
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+        return date_str
+    except ValueError:
+        return None
+
+def is_valid_price(price_str):
+    try:
+        return int(price_str)
+    except ValueError:
+        return None
+
+def print_invalid_transaction(transaction_id, field, value):
+    print(f"TransactionID: {transaction_id} Invalid {field} format: {value}")
+
+with open(file_path, "r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        current_date = is_valid_date(row.get("Date"))
+        if current_date:
+            if current_date and min_date <= current_date and current_date <= max_date:
+                price_int = is_valid_price(row.get("Price"))
+                if price_int:
+                    print(price_int)
+                    total_price += price_int
+                else:
+                    print_invalid_transaction(row.get("TransactionID", "N/A"), "Price", row.get("Price"))
+
+        else:
+            print_invalid_transaction(row.get("TransactionID", "N/A"), "Date", row.get("Date"))
+            continue
+
+print(total_price)
+
+
+==================================================
+File: 2025/2025-05-16/task0516.py
+==================================================
+
+# 🥋【2025-05-16（金）｜Python道場・第五十七問（DictReader 応用・グループ化と合計集約）】
+# 🎯 お題：sales_data.csv を DictReader で読み込みます。
+# 'Category' ごとに、その 'Quantity' の合計を計算し、
+# 結果を辞書形式で表示してください。
+#
+# 【条件】
+# - 読み取り元ファイル名：sales_data.csv (別途用意)
+# - csv.DictReader() を使用すること
+# - 'Category' をキーとしてデータをグループ化する
+# - 各 'Category' に属する取引の 'Quantity' の合計を計算する
+# - Quantity の値は文字列で読み込まれるため、int() に変換が必要
+# - Quantity 列が数値に変換できない行は無視してください。（try-except を使うことを推奨）
+# - 結果を以下の形式の辞書で表示すること:
+#   例: {'Fruit': 35, 'Dairy': 8, 'Bakery': 4, 'Furniture': 2}
+#
+# ヒント: 結果を格納するための辞書を用意します。ループ内で各行の 'Category' をキーとして使用し、そのカテゴリの合計数量を更新していきます。Quantity の数値変換には try-except を使って安全に行いましょう。
+
+# ここに解答コードを記述してください
+import os
+import csv
+
+dirname = os.path.dirname(__file__)
+file_path = os.path.join(dirname, "sales_data.csv")
+
+total_quantity = {}
+with open(file_path, "r", newline="", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        try:
+            quantity_int = int(row["Quantity"])
+        except ValueError:
+            print(f"TransactionID:{row.get('TransactionID', "N/A")} is Invalid quantity: {row['Quantity']}")
+            continue
+
+        total_quantity[row["Category"]] = total_quantity.get(row["Category"], 0) + quantity_int
+
+print(total_quantity)
+
+# total_quantity[row["Category"]] = total_quantity.get(row["Category"], 0) + int(row["Quantity"])
+# 右辺にtotal_quantity.get(row["Category"], 0)を使うことで、キーが存在しない場合は0を返すようにしている。
+# そのためキーの存在確認もいらなくないし、キーがなくても0を返して確実に初期化される、素晴らしい
+
+
+==================================================
+File: 2025/2025-05-17-1/task.py
+==================================================
+
+# 🎯 お題：
+# ECサイトの注文履歴がJSONファイル（orders.json）に保存されています。
+# このファイルから顧客ごとの合計注文金額を計算し、結果を新しいCSVファイル（customer_revenue.csv）に出力してください。
+
+# 【orders.json のサンプルデータ形式】
+# (この内容で orders.json ファイルを作成して使ってください)
+
+# 【条件】
+# 1.  `json` モジュールを使って `orders.json` を読み込みます。
+# 2.  各注文について、`items` リスト内の各商品の `price` と `quantity` を掛け合わせて小計を出し、注文全体の合計金額を計算します。
+# 3.  顧客ID (`customer_id`) ごとに、その顧客の全注文の合計金額を集計します。
+# 4.  集計結果を `customer_revenue.csv` に書き出します。CSVのヘッダーは `customer_id,total_revenue` としてください。
+# 5.  もし `price` や `quantity` が数値に変換できないような不正なデータがあった場合は、エラーログ（例えば `error_log.txt`）に注文IDとその理由を記録し、そのアイテムの計算はスキップしてください（`try-except`を活用しましょう）。
+
+# 【出力 `customer_revenue.csv` の例】
+# (ORD004 は price が不正なため、CUST300 の revenue は 0 または記録なし、エラーログに出力)
+# customer_id,total_revenue
+# CUST100,26000
+# CUST200,8000
+
+# 【出力 `error_log.txt` の例】
+# 注文ID ORD004 のアイテム「タブレット」のpriceが不正です: 不明
+
+# 【ヒント】
+# * ネストしたデータ構造の扱いに注意してください。
+# * 顧客ごとの合計金額を保持するために、辞書を使うと便利かもしれません。
+# * `json.load()` または `json.loads()` でJSONデータをPythonの辞書やリストに変換できます。
+
+import os
+import csv
+import json
+
+# エラーメッセージ生成
+def create_error_message(order_id, product_name, field_name, value):
+    return f"エラー: 項目「{field_name}」の値「{value}」は無効です。(注文ID: {order_id}, 商品: {product_name})"
+
+# 数値の有効性判定
+def is_valid_number(value):
+    try:
+        value_int = int(value)
+        return value_int
+    except ValueError:
+        return None
+
+dirname = os.path.dirname(__file__)
+orders_path = os.path.join(dirname, "orders.json")
+output_path = os.path.join(dirname, "customer_revenue.csv")
+error_log_path = os.path.join(dirname, "error_log.txt")
+
+# 読み込み
+with open(orders_path, "r", encoding="utf-8") as file:
+    orders = json.load(file)
+
+# jsonを回してレコードを取り出す
+customer_revenue = {}
+error_log = []
+for order in orders:
+    # レコードからitemsを取り出す
+    product_revenue_total = 0
+    for item in order["items"]:
+        # priceの有効性チェック
+        price_str = item.get("price")
+        price_int = is_valid_number(price_str)
+        if not price_int:
+            error_message = create_error_message(order.get('order_id', 'N/A'), item.get('product_name', 'N/A'), 'price', item.get('price', 'N/A'))
+            error_log.append(error_message)
+
+        # quantityの有効性チェック
+        quantity_str = item.get("quantity")
+        quantity_int = is_valid_number(quantity_str)
+        if not quantity_int:
+            error_message = create_error_message(order.get('order_id', 'N/A'), item.get('product_name', 'N/A'), 'quantity', item.get('quantity', 'N/A'))
+            error_log.append(error_message)
+
+        # priceとquantityがどちらか無効ならcontinue
+        if not price_int or not quantity_int:
+            continue
+
+        # 総額を算出
+        product_revenue = price_int * quantity_int
+        product_revenue_total += product_revenue
+
+    customer_id = order.get('customer_id', 'N/A')
+    customer_revenue[customer_id] = customer_revenue.get(customer_id, 0) + product_revenue_total
+
+# 合計額を出力
+with open(output_path, "w", newline="", encoding="utf-8") as file:
+    writer = csv.DictWriter(file, fieldnames=["customer_id", "total_revenue"])
+    writer.writeheader()
+    for customer_id, total_revenue in customer_revenue.items():
+        writer.writerow({"customer_id": customer_id, "total_revenue": total_revenue})
+
+# エラーログを出力
+if error_log:
+    with open(error_log_path, "w", newline="", encoding="utf-8") as file:
+        for error_message in error_log:
+            file.write(error_message + "\n")
+
+    print(f"取得エラーが {len(error_log)} 件発生しました。エラーログを参照してください。")
+
+# jsonを回してレコードを取り出す
+#     レコードからitemsを取り出す
+#         itemsを回してitemを取り出す
+#         item内のpriceの有効性をチェック
+#         item内のquantityの有効性をチェック
+#         item内のpriceとquantityを掛ける = ここではitem_totalとする
+#         item_totalを合計する = item_total_sum　とする
+#             集計配列にcustomer_id：item_total_sumを追加する
+
+
+
+==================================================
+File: 2025/2025-05-17-2/task.py
+==================================================
+【綾奈からの挑戦状・第二問】複数CSVファイルの関連付けと分析
+🎯 お題：
+あなたは小規模な書店のデータを分析しています。`books.csv` と `sales.csv` の2つのファイルがあります。これらの情報を使って、カテゴリごとの総販売冊数と、最も売れた本（販売冊数基準）を特定し、`category_summary.csv` に出力してください。
+
+【books.csv のサンプルデータ形式】
+(この内容で books.csv ファイルを作成して使ってください)
+
+book_id,title,category,price
+B001,Python入門,プログラミング,2800
+B002,たのしい料理,料理,1500
+B003,すごいSF小説,小説,900
+B004,続・Python入門,プログラミング,3200
+B005,お菓子作りの秘訣,料理,1800
+B006,名作ミステリー,小説,エラー
+
+【sales.csv のサンプルデータ形式】
+(この内容で sales.csv ファイルを作成して使ってください)
+
+sale_id,book_id,quantity_sold,sale_date
+S001,B001,5,2025-05-10
+S002,B002,3,2025-05-10
+S003,B001,3,2025-05-11
+S004,B003,7,2025-05-12
+S005,B004,2,2025-05-13
+S006,B002,4,2025-05-14
+S007,B005,6,2025-05-15
+S008,B006,3,2025-05-16
+S009,B001,ABC,2025-05-17
+
+【条件】
+1.  `csv.DictReader` を使って両方のCSVファイルを読み込みます。
+2.  まず、`sales.csv` から `book_id` ごとの総販売冊数を集計します。`quantity_sold` が数値に変換できないデータは無視し、ログファイル `sales_error_log.txt` に `sale_id` とエラー内容を記録してください。
+3.  次に、`books.csv` の情報と上記集計結果を `book_id` をキーにして関連付け、各本のカテゴリと総販売冊数を把握します。
+4.  カテゴリごとに総販売冊数を計算します。
+5.  カテゴリごとに最も販売冊数が多かった本のタイトルとその販売冊数を特定します。（もし販売冊数が同じ場合は、どちらか一方を選んで構いません）
+6.  結果を `category_summary.csv` に書き出します。ヘッダーは `category,total_quantity_sold,top_selling_book_title,top_book_quantity` としてください。
+
+【出力 `category_summary.csv` の例】
+(S009のquantity_soldは不正。B006はsalesにはあるが、books.csvのpriceがエラーだが、この問題ではpriceは直接使わない。ここではquantity_soldのみ考慮)
+category,total_quantity_sold,top_selling_book_title,top_book_quantity
+プログラミング,10,Python入門,8
+料理,13,お菓子作りの秘訣,6
+小説,10,すごいSF小説,7
+
+【出力 `sales_error_log.txt` の例】
+sale_id S009 の quantity_sold が不正です: ABC
+
+【ヒント】
+* 本の情報を格納するために、`book_id` をキーとした辞書を作ると、販売データとの紐付けがしやすいです。
+* カテゴリごとの集計や、カテゴリ内で最も売れた本を見つけるために、ループ処理と条件分岐をうまく使いましょう。
+* デフォルト値を扱える `collections.defaultdict` も集計に便利かもしれません。

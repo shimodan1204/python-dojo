@@ -1,0 +1,6 @@
+course_id,course_name,category,difficulty_level
+C01,Python入門,プログラミング,初級
+C02,データ分析基礎,データサイエンス,中級
+C03,Webデザインの基本,デザイン,初級
+C04,機械学習実践,データサイエンス,上級
+C05,JavaScript集中講座,プログラミング,中級
