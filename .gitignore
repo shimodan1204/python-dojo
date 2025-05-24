@@ -10,3 +10,4 @@ venv/
 *.DS_Store
 python-dojo.code-workspace
 .vscode/
+*.code-workspace
