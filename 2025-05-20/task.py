@@ -116,39 +116,75 @@ enrollments_file = os.path.join(base_dir, ENROLLMENTS_FILE)
 courses_file = os.path.join(base_dir, COURSES_FILE)
 report_file = os.path.join(base_dir, REPORT_FILE)
 
-# 1．courses.csvの読み込み: course_id をキーにした辞書に格納
-courses = {}
-with open(courses_file, "r", newline="", encoding="utf-8") as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        course_id = row.get("course_id")
-        course_name = row.get("course_name")
-        category = row.get("category")
-        if course_id and course_name and category:
-            courses[course_id] = row
+# ここから関数定義
 
-# 2．enrollments.csvの読み込み: 配列に格納
-enrollments = []
-with open(enrollments_file, "r", newline="", encoding="utf-8") as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        user_id = row.get("user_id")
-        course_id = row.get("course_id")
-        completion_status = row.get("completion_status")
-        if user_id and course_id and completion_status and course_id in courses:
-            enrollments.append(row)
+# def is_numeric_grade(grade):
+#     """
+#     数値評点かどうかを確認
+#     """
+#     try:
+#         float(grade)
+#         return True
+#     except ValueError:
+#         return False
 
-# ルックアップテーブルのテスト
-for row in enrollments:
-    course_id = row["course_id"]
-    if course_id in courses:
-        print(courses[course_id])
-    else:
-        print(f"course_id {course_id} not found")
+# def create_numeric_grade_error_message(grade,user_id,course_id):
+#     """
+#     値が数値でない場合のエラーメッセージを生成
+#     """
+#     return f"grade: {grade} is not numeric (user_id: {user_id}, course_id: {course_id})"
 
-# 3．enrollments.csv と courses.csv の結合：　結合は不要、ルックアップテーブルで対応
+def prepare_courses_lookup():
+    """
+    courses.csvの読み込み: course_id をキーにした辞書に格納
+    """
+    courses_lookup = {}
+    with open(courses_file, "r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            course_id = row.get("course_id")
+            course_name = row.get("course_name")
+            category = row.get("category")
+            if course_id and course_name and category:
+                courses_lookup[course_id] = row
+    return courses_lookup
 
-# 4．カテゴリ別 受講完了者数ランキングの算出
+def prepare_clean_enrollment_data(enrollments_file,courses_lookup):
+    """
+    受講データのクリーニング
+    """
+    clean_data = []
+    with open(enrollments_file, "r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            # 必須パラメータのチェック
+            user_id = row.get("user_id")
+            course_id = row.get("course_id")
+            # completion_status = row.get("completion_status") 人気コースランキングがconpetion_statusの”値を問わず”なので、条件から外した
+            if not(user_id and course_id and course_id in courses_lookup):
+                print(f"警告：不正な受講記録をスキップします {row}")
+                continue
+
+            # corsesの情報を追加
+            new_row = row.copy()
+            new_row["category"] = courses_lookup[course_id]["category"]
+            new_row["course_name"] = courses_lookup[course_id]["course_name"]
+
+            # gradeのチェック兼変換
+            grade_str = new_row.get("grade")
+            if grade_str:
+                try:
+                    new_row["grade_numeric"] = float(grade_str)
+                except ValueError:
+                    error_message = f"警告：gradeが数値に変換できません: {grade_str},user_id: {user_id}, course_id: {course_id}"
+                    print(error_message)
+                    new_row["grade_numeric"] = None
+            else:
+                new_row["grade_numeric"] = None
+
+            clean_data.append(new_row)
+    return clean_data
+
 def extract_completed_users(enrollments):
     """
     受講完了ユーザーを抽出
@@ -160,15 +196,15 @@ def extract_completed_users(enrollments):
             completed_users.append(row)
     return completed_users
 
-def add_category_to_completed_users(completed_users,courses):
-    """
-    受講完了ユーザーにcourses.csvのcategoryを追加
-    """
-    for row in completed_users:
-        course_id = row["course_id"]
-        if course_id in courses:
-            row["category"] = courses[course_id]["category"]
-    return completed_users
+# def add_category_to_completed_users(completed_users,courses_lookup):
+#     """
+#     受講完了ユーザーにcourses_lookup.csvのcategoryを追加
+#     """
+#     for row in completed_users:
+#         course_id = row["course_id"]
+#         if course_id in courses_lookup:
+#             row["category"] = courses_lookup[course_id]["category"]
+#     return completed_users
 
 def get_category_completed_count(enrollments):
     """
@@ -186,40 +222,23 @@ def sort_category_completed_count(category_completed_count):
     """
     return sorted(category_completed_count.items(),key=lambda x:x[1],reverse=True)
 
-def get_category_ranking(enrollments,courses):
+def get_category_ranking(enrollments,courses_lookup):
     """
     カテゴリ別 受講完了者数ランキングの算出
     """
     # enrollmentsからcompletion_status=completedユーザーを抽出
     completed_users = extract_completed_users(enrollments)
 
-    # 抽出したユーザーにcoursesを結合、category列を追加
-    completed_users_with_category = add_category_to_completed_users(completed_users,courses)
+    # 抽出したユーザーにcourses_lookupを結合、category列を追加
+    # completed_users_with_category = add_category_to_completed_users(completed_users,courses_lookup)
 
     # 結合したデータからcategoryで分類ししてそれぞれカウント
-    category_completed_count = get_category_completed_count(completed_users_with_category)
+    category_completed_count = get_category_completed_count(completed_users)
 
     # category_completedをsort、人数順降順にする
     sorted_category_completed_count = sort_category_completed_count(category_completed_count)
 
     return sorted_category_completed_count
-
-# 5．カテゴリ別 平均評点の算出
-def is_numeric_grade(grade):
-    """
-    数値評点かどうかを確認
-    """
-    try:
-        float(grade)
-        return True
-    except ValueError:
-        return False
-
-def create_numeric_grade_error_message(grade,user_id,course_id):
-    """
-    値が数値でない場合のエラーメッセージを生成
-    """
-    return f"grade: {grade} is not numeric (user_id: {user_id}, course_id: {course_id})"
 
 def extract_numeric_grade_users(enrollments):
     """
@@ -227,16 +246,43 @@ def extract_numeric_grade_users(enrollments):
     """
     numeric_grade_users = []
     for row in enrollments:
-        grade = row.get("grade")
-        if is_numeric_grade(grade):
+        grade_numeric = row.get("grade_numeric")
+        if grade_numeric is not None:
             numeric_grade_users.append(row)
-        else:
-            user_id = row.get("user_id","N/A")
-            course_id = row.get("course_id","N/A")
-            error_message = create_numeric_grade_error_message(grade,user_id,course_id)
-            print(error_message)
 
     return numeric_grade_users
+
+def get_average_score_by_category(numeric_grade_users):
+    """
+    カテゴリごとの平均点の算出
+    """
+    average_score_by_category = defaultdict(lambda: {"total_grade": 0.0, "count": 0})
+
+    for row in numeric_grade_users:
+        category = row.get("category")
+        grade_numeric = row.get("grade_numeric")
+
+        if category and grade_numeric:
+            try:
+                average_score_by_category[category]["total_grade"] += grade_numeric
+                average_score_by_category[category]["count"] += 1
+            except ValueError:
+                user_id = row.get("user_id", "N/A")
+                course_id = row.get("course_id", "N/A")
+                error_message = f"警告: grade_numeric: {grade_numeric} が不正です (user_id: {user_id}, course_id: {course_id})"
+                print(error_message)
+        else:
+            error_message = f"category or grade not found: {row}"
+            print(error_message)
+
+    # カテゴリ名、平均点、対象者数を取得する
+    for category, data in average_score_by_category.items():
+        if data["count"] > 0:
+            average_score_by_category[category]["average_score"] = data["total_grade"] / data["count"]
+        else:
+            print(f"{category}: 該当なし")
+
+    return average_score_by_category
 
 def get_category_average_score(enrollments):
     """
@@ -245,26 +291,36 @@ def get_category_average_score(enrollments):
     # enrollmentsからcompletion_status=completedユーザーを抽出
     completed_users = extract_completed_users(enrollments)
 
-    # 抽出したユーザーにcoursesを結合、category列を追加
-    completed_users_with_category = add_category_to_completed_users(completed_users,courses)
+    # 抽出したユーザーにcourses_lookupを結合、category列を追加
+    # completed_users_with_category = add_category_to_completed_users(completed_users,courses_lookup)
 
     # completed_users_with_categoryから、gradeが数値のユーザーを抽出
-    #     - gradeが数値に変換できたら集計対象listに格納
-    #     - gradeが数値に変換できなかったらコンソールにメッセージを出して除外
-    # 数値に変換できるかどうかを確認するために、try-exceptを使う
-    numeric_grade_users = extract_numeric_grade_users(completed_users_with_category)
+    numeric_grade_users = extract_numeric_grade_users(completed_users)
 
     # 抽出結果からカテゴリごとの平均点と集計対象人数を抽出
     # 抽出結果から平均点を算出、小数点第一まで
     # 集計対象が0人なら該当なしフラグを立てる
+    average_score_by_category = get_average_score_by_category(numeric_grade_users)
+    return average_score_by_category
 
-# 6．人気コースランキングの算出
-# 7．特別優秀者リストの算出
-# 8．数値変換のエラー回避(+コンソール出力)
+# ここから実行部分
 
-category_ranking = get_category_ranking(enrollments,courses)
+# 1．courses.csvの読み込み: course_id をキーにした辞書に格納
+courses_lookup = prepare_courses_lookup()
+
+# 2．enrollments.csvの読み込み: 配列に格納/クリーニング/courses_lookupを結合
+enrollments = prepare_clean_enrollment_data(enrollments_file,courses_lookup)
+
+# 3．カテゴリ別 受講完了者数ランキングの算出
+category_ranking = get_category_ranking(enrollments,courses_lookup)
 for index, (category, count) in enumerate(category_ranking, start=1):
     print(f"{index}. {category}: {count}人")
 
-category_average_score = get_category_average_score(enrollments)
-print(category_average_score)
+# 4．カテゴリ別 平均評点の算出
+category_average_score = get_category_average_score(enrollments,courses_lookup)
+for category, data in category_average_score.items():
+    print(f"{category}: 平均{data['average_score']:.1f}点 (対象者数: {data['count']}人)")
+
+# 5．人気コースランキングの算出
+# 6．特別優秀者リストの算出
+# 7．数値変換のエラー回避(+コンソール出力)
